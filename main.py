@@ -255,51 +255,118 @@ div[data-baseweb="select"] span {
     font-weight: 950 !important;
 }
 
-/* Dropdown opened menu: readable Cora dark style */
+/* Dropdown opened menu: HIGH CONTRAST Cora dark style */
 div[data-baseweb="popover"],
 div[data-baseweb="menu"],
 ul[role="listbox"],
 div[role="listbox"] {
-    background: #120600 !important;
-    color: #ffe9d1 !important;
-    border: 1px solid rgba(255, 160, 55, 0.45) !important;
+    background: #050100 !important;
+    color: #fff3df !important;
+    border: 2px solid rgba(255, 159, 47, 0.85) !important;
     border-radius: 16px !important;
-    box-shadow: 0 0 24px rgba(255, 110, 20, 0.22) !important;
+    box-shadow: 0 0 28px rgba(255, 120, 20, 0.38) !important;
 }
 
 li[role="option"],
 div[role="option"] {
-    background: #120600 !important;
-    color: #ffe9d1 !important;
-    font-weight: 800 !important;
+    background: #050100 !important;
+    color: #fff3df !important;
+    font-size: 1.03rem !important;
+    font-weight: 950 !important;
+    min-height: 42px !important;
 }
 
 li[role="option"] *,
 div[role="option"] * {
-    color: #ffe9d1 !important;
+    color: #fff3df !important;
+    font-size: 1.03rem !important;
+    font-weight: 950 !important;
+    opacity: 1 !important;
 }
 
 li[role="option"]:hover,
 div[role="option"]:hover,
 li[aria-selected="true"],
 div[aria-selected="true"] {
-    background: rgba(255, 159, 47, 0.22) !important;
-    color: #ffffff !important;
+    background: #ff9f2f !important;
+    color: #160600 !important;
 }
 
-/* File uploader readable */
-[data-testid="stFileUploader"] section {
-    background: rgba(0, 0, 0, 0.62) !important;
-    border: 1px solid rgba(255, 160, 55, 0.35) !important;
-    border-radius: 16px !important;
+li[role="option"]:hover *,
+div[role="option"]:hover *,
+li[aria-selected="true"] *,
+div[aria-selected="true"] * {
+    color: #160600 !important;
+    font-weight: 950 !important;
+}
+
+/* File uploader HIGH CONTRAST */
+[data-testid="stFileUploader"] section,
+[data-testid="stFileUploaderDropzone"] {
+    background: rgba(0, 0, 0, 0.82) !important;
+    border: 2px solid rgba(255, 159, 47, 0.75) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 0 22px rgba(255, 110, 20, 0.18) !important;
 }
 
 [data-testid="stFileUploader"] section *,
+[data-testid="stFileUploaderDropzone"] *,
 [data-testid="stFileUploader"] label,
 [data-testid="stFileUploader"] small {
-    color: #ffe9d1 !important;
+    color: #fff3df !important;
+    opacity: 1 !important;
+    font-weight: 850 !important;
 }
 
+[data-testid="stFileUploader"] button,
+[data-testid="stFileUploaderDropzone"] button {
+    background: linear-gradient(135deg, #ff9f2f, #ff4d1a) !important;
+    color: #160600 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 950 !important;
+    opacity: 1 !important;
+}
+
+[data-testid="stFileUploader"] button *,
+[data-testid="stFileUploaderDropzone"] button * {
+    color: #160600 !important;
+    font-weight: 950 !important;
+}
+
+
+/* Always visible selected menu pill */
+.current-menu-pill {
+    margin-top: -6px;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, rgba(255,159,47,0.24), rgba(255,77,26,0.16));
+    border: 2px solid rgba(255,159,47,0.85);
+    border-radius: 16px;
+    padding: 10px 14px;
+    color: #fff3df !important;
+    font-size: 1.02rem;
+    font-weight: 950;
+    box-shadow: 0 0 22px rgba(255,110,20,0.18);
+}
+.current-menu-pill b {
+    color: #ffb14a !important;
+}
+
+/* Selected value inside closed dropdown must stay visible */
+[data-testid="stSelectbox"] div[data-baseweb="select"] div,
+[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+[data-testid="stSelectbox"] div[data-baseweb="select"] input,
+[data-testid="stSelectbox"] div[data-baseweb="select"] svg {
+    color: #fff3df !important;
+    fill: #ffb14a !important;
+    opacity: 1 !important;
+    font-weight: 950 !important;
+}
+
+[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    background: #090200 !important;
+    border: 2px solid rgba(255, 159, 47, 0.92) !important;
+}
 
 /* Checkbox */
 .stCheckbox {
@@ -1642,6 +1709,11 @@ selected_view = st.selectbox(
 if selected_view != st.session_state.view:
     set_view(selected_view)
     st.rerun()
+
+st.markdown(
+    f'<div class="current-menu-pill">📍 Aktuell offen: <b>{st.session_state.view}</b></div>',
+    unsafe_allow_html=True
+)
 
 
 # =========================================================
