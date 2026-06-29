@@ -235,6 +235,26 @@ p, div, span, label {
     margin-bottom: 6px;
 }
 
+/* Dropdown Navigation */
+div[data-baseweb="select"] > div {
+    background: rgba(0, 0, 0, 0.72) !important;
+    border: 1px solid rgba(255, 160, 55, 0.42) !important;
+    border-radius: 18px !important;
+    min-height: 56px !important;
+    box-shadow: 0 0 22px rgba(255, 110, 20, 0.12);
+}
+
+div[data-baseweb="select"] span {
+    color: #ffe9d1 !important;
+    font-weight: 850 !important;
+}
+
+[data-testid="stSelectbox"] label {
+    color: #ff9f2f !important;
+    font-size: 1.15rem !important;
+    font-weight: 950 !important;
+}
+
 /* Checkbox */
 .stCheckbox {
     background: rgba(255, 255, 255, 0.060);
@@ -1549,15 +1569,8 @@ st.markdown("""
 
 
 # =========================================================
-# NAVIGATION — MOBILE FIRST / DESKTOP SAFE
+# NAVIGATION — SCHWEIZER MESSER DROPDOWN
 # =========================================================
-st.markdown("""
-<div class="cora-card">
-    <div class="card-title">🧭 Schnell finden</div>
-    <div class="card-text">Ein Bereich wählen. Kein Suchen. Kein Scroll-Chaos.</div>
-</div>
-""", unsafe_allow_html=True)
-
 nav_items = [
     "🏠 Start",
     "📸 Was ist da?",
@@ -1568,15 +1581,21 @@ nav_items = [
     "🎙️ Cora Hilfe",
 ]
 
-for row_start in range(0, len(nav_items), 2):
-    cols = st.columns(2)
-    for idx, item in enumerate(nav_items[row_start:row_start + 2]):
-        with cols[idx]:
-            is_active = st.session_state.view == item
-            label = f"✅ {item}" if is_active else item
-            if st.button(label, key=f"nav_{row_start}_{idx}_{item}"):
-                set_view(item)
-                st.rerun()
+current_view = st.session_state.get("view", "🏠 Start")
+if current_view not in nav_items:
+    current_view = "🏠 Start"
+    st.session_state.view = current_view
+
+selected_view = st.selectbox(
+    "🧭 Menü",
+    nav_items,
+    index=nav_items.index(current_view),
+    key="main_nav_selectbox"
+)
+
+if selected_view != st.session_state.view:
+    set_view(selected_view)
+    st.rerun()
 
 
 # =========================================================
