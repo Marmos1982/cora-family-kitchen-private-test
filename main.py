@@ -1,51 +1,57 @@
 from pathlib import Path
-import py_compile
 import shutil
+import py_compile
 
 main = Path("main.py")
-backup = Path("main_backup_before_mobile_fix.py")
+backup = Path("main_backup_before_button_fix.py")
 
 shutil.copy(main, backup)
-
 text = main.read_text(encoding="utf-8")
 
-text = text.replace("use_column_width=True", "use_container_width=True")
+# Alte Button-Regel gezielt verbessern
+text = text.replace(
+"""/* Navigation: bigger touch targets, stable on desktop and mobile */
+div[data-testid="column"] .stButton > button {
+    min-height: 52px;
+    padding: 0.70rem 0.55rem;
+    font-size: 0.96rem;
+    white-space: normal;
+}""",
+"""/* Navigation: iPhone safe buttons */
+div[data-testid="column"] .stButton > button {
+    min-height: 76px !important;
+    padding: 0.85rem 0.55rem !important;
+    font-size: 1.05rem !important;
+    border-radius: 20px !important;
+    white-space: normal !important;
+}"""
+)
 
-old = """    .block-container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-bottom: 220px !important;
-    }"""
-
-new = """    .block-container {
-        padding-top: 120px !important;
-        padding-bottom: 430px !important;
-        padding-left: 1.15rem !important;
-        padding-right: 1.15rem !important;
-    }"""
-
-text = text.replace(old, new)
-
-old2 = """.block-container {
-    max-width: 780px;
-    padding-top: 1.2rem;
-    padding-bottom: 200px !important;
+# Mobile-Regel ergänzen
+mobile_marker = """    .stCheckbox label {
+        font-size: 0.98rem !important;
+    }
 }"""
 
-new2 = """.block-container {
-    max-width: 780px;
-    padding-top: 90px !important;
-    padding-bottom: 360px !important;
+mobile_new = """    .stCheckbox label {
+        font-size: 0.98rem !important;
+    }
+
+    div[data-testid="column"] .stButton > button {
+        min-height: 82px !important;
+        font-size: 1.08rem !important;
+        padding: 0.9rem 0.5rem !important;
+    }
 }"""
 
-text = text.replace(old2, new2)
+text = text.replace(mobile_marker, mobile_new)
 
 main.write_text(text, encoding="utf-8")
 
 try:
     py_compile.compile(str(main), doraise=True)
-    print("✅ SAFE FIX OK: main.py läuft. Backup:", backup)
+    print("✅ BUTTON FIX OK. Backup:", backup)
 except Exception as e:
     shutil.copy(backup, main)
-    print("❌ Fehler erkannt. Backup wurde zurückgespielt.")
+    print("❌ Fehler. Backup zurückgespielt.")
     print(e)
