@@ -255,6 +255,52 @@ div[data-baseweb="select"] span {
     font-weight: 950 !important;
 }
 
+/* Dropdown opened menu: readable Cora dark style */
+div[data-baseweb="popover"],
+div[data-baseweb="menu"],
+ul[role="listbox"],
+div[role="listbox"] {
+    background: #120600 !important;
+    color: #ffe9d1 !important;
+    border: 1px solid rgba(255, 160, 55, 0.45) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 24px rgba(255, 110, 20, 0.22) !important;
+}
+
+li[role="option"],
+div[role="option"] {
+    background: #120600 !important;
+    color: #ffe9d1 !important;
+    font-weight: 800 !important;
+}
+
+li[role="option"] *,
+div[role="option"] * {
+    color: #ffe9d1 !important;
+}
+
+li[role="option"]:hover,
+div[role="option"]:hover,
+li[aria-selected="true"],
+div[aria-selected="true"] {
+    background: rgba(255, 159, 47, 0.22) !important;
+    color: #ffffff !important;
+}
+
+/* File uploader readable */
+[data-testid="stFileUploader"] section {
+    background: rgba(0, 0, 0, 0.62) !important;
+    border: 1px solid rgba(255, 160, 55, 0.35) !important;
+    border-radius: 16px !important;
+}
+
+[data-testid="stFileUploader"] section *,
+[data-testid="stFileUploader"] label,
+[data-testid="stFileUploader"] small {
+    color: #ffe9d1 !important;
+}
+
+
 /* Checkbox */
 .stCheckbox {
     background: rgba(255, 255, 255, 0.060);
