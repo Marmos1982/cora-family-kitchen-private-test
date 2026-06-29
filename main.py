@@ -270,11 +270,13 @@ p, div, span, label {
     background: linear-gradient(135deg, #ff9f2f, #ff4d1a);
     color: #160600 !important;
     border: none;
-    border-radius: 15px;
+    border-radius: 16px;
     font-weight: 950;
-    padding: 0.75rem 1rem;
+    padding: 0.82rem 1rem;
     width: 100%;
+    min-height: 48px;
     box-shadow: 0 0 20px rgba(255, 120, 20, 0.24);
+    white-space: normal;
 }
 
 .stButton > button:hover {
@@ -282,11 +284,11 @@ p, div, span, label {
     color: #000000 !important;
 }
 
-/* Navigation: stable on desktop and mobile */
+/* Navigation: bigger touch targets, stable on desktop and mobile */
 div[data-testid="column"] .stButton > button {
-    min-height: 42px;
-    padding: 0.55rem 0.45rem;
-    font-size: 0.86rem;
+    min-height: 52px;
+    padding: 0.70rem 0.55rem;
+    font-size: 0.96rem;
     white-space: normal;
 }
 
@@ -1513,6 +1515,14 @@ def render_baking(bake_name):
         st.markdown(f'<div class="list-item"><b>{i}.</b> {step}</div>', unsafe_allow_html=True)
 
 
+
+
+def home_button(key_suffix=""):
+    """Small safe back button used in all sub pages."""
+    if st.button("🏠 Zur Startseite", key=f"home_{key_suffix}"):
+        st.session_state.view = "🏠 Start"
+        st.rerun()
+
 # =========================================================
 # CORA IMAGE
 # =========================================================
@@ -1539,7 +1549,7 @@ st.markdown("""
 
 
 # =========================================================
-# NAVIGATION — STABLE 2 ROWS
+# NAVIGATION — MOBILE FIRST / DESKTOP SAFE
 # =========================================================
 st.markdown("""
 <div class="cora-card">
@@ -1548,21 +1558,23 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-nav_rows = [
-    ["🏠 Start", "📸 Was ist da?", "🍲 Kochen", "🍰 Backen"],
-    ["🛒 Einkauf", "🕘 Verlauf", "🎙️ Cora Hilfe", ""],
+nav_items = [
+    "🏠 Start",
+    "📸 Was ist da?",
+    "🍲 Kochen",
+    "🍰 Backen",
+    "🛒 Einkauf",
+    "🕘 Verlauf",
+    "🎙️ Cora Hilfe",
 ]
 
-for row_index, row_items in enumerate(nav_rows):
-    nav_cols = st.columns(4)
-    for col, item in zip(nav_cols, row_items):
-        with col:
-            if not item:
-                st.markdown("&nbsp;", unsafe_allow_html=True)
-                continue
+for row_start in range(0, len(nav_items), 2):
+    cols = st.columns(2)
+    for idx, item in enumerate(nav_items[row_start:row_start + 2]):
+        with cols[idx]:
             is_active = st.session_state.view == item
             label = f"✅ {item}" if is_active else item
-            if st.button(label, key=f"nav_{row_index}_{item}"):
+            if st.button(label, key=f"nav_{row_start}_{idx}_{item}"):
                 set_view(item)
                 st.rerun()
 
