@@ -80,26 +80,6 @@ def show_simple_list(title, items, icon="🧾"):
         """, unsafe_allow_html=True)
 
 
-def show_found_items_card(found_items):
-    st.markdown("""
-    <div class="cora-card">
-        <div class="card-title">📦 Cora hat sortiert</div>
-        <div class="card-text">
-            Das ist der erste V1-Demo-Check. Später erkennt Cora die Zutaten direkt aus den Bildern.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    for category, items in found_items.items():
-        st.markdown(f'<div class="shopping-category-title">{category}</div>', unsafe_allow_html=True)
-        for item in items:
-            st.markdown(f"""
-            <div class="list-item">
-                ✅ {item}
-            </div>
-            """, unsafe_allow_html=True)
-
-
 # =========================================================
 # CSS / DESIGN
 # =========================================================
@@ -300,6 +280,14 @@ p, div, span, label {
 .stButton > button:hover {
     background: linear-gradient(135deg, #ffb34d, #ff6b2a);
     color: #000000 !important;
+}
+
+/* Navigation: stable on desktop and mobile */
+div[data-testid="column"] .stButton > button {
+    min-height: 42px;
+    padding: 0.55rem 0.45rem;
+    font-size: 0.86rem;
+    white-space: normal;
 }
 
 /* Mobile */
@@ -870,6 +858,173 @@ recipes = {
     }
 }
 
+# =========================================================
+# DATA — FAMILIEN-BASICS / VORRAT
+# =========================================================
+family_recipes = {
+    "11. Nudeln mit schneller Tomatensauce": {
+        "info": {"time": "15–20 Min", "budget": "Sehr günstig", "level": "Sehr einfach", "family": "Kinderklassiker"},
+        "description": clean_text("""
+            Der Familienretter, wenn wenig Energie da ist.
+            Nudeln, Tomatensauce, Gewürze — warm, schnell, ehrlich.
+        """),
+        "ingredients": ["Nudeln", "Passierte Tomaten oder Tomatensauce", "Zwiebel", "Knoblauch", "Öl", "Salz", "Optional: Käse", "Optional: Kräuter"],
+        "shopping": {
+            "🍚 Trockenware": ["Nudeln"],
+            "🛒 Obst & Gemüse": ["Zwiebel", "Knoblauch"],
+            "🥫 Vorrat / Dosen": ["Passierte Tomaten oder Tomatensauce"],
+            "🥢 Saucen & Gewürze": ["Öl", "Salz", "Optional: Kräuter"],
+            "🥛 Kühlung": ["Optional: Käse"]
+        },
+        "steps": ["Nudeln kochen.", "Zwiebel und Knoblauch klein schneiden und in Öl anbraten.", "Tomatensauce dazugeben und würzen.", "Kurz köcheln lassen.", "Nudeln mit Sauce mischen.", "Optional Käse darüber."]
+    },
+    "12. Kartoffelpfanne mit Ei": {
+        "info": {"time": "25 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Sättigend / Vorrat"},
+        "description": clean_text("""
+            Kartoffeln da? Eier da? Dann ist Essen fast fertig.
+            Wenig Zutaten, viel Sättigung, perfekt für Resteküche.
+        """),
+        "ingredients": ["Kartoffeln", "Eier", "Zwiebel", "Öl oder Butter", "Salz", "Optional: Speck, Käse oder Gemüse"],
+        "shopping": {
+            "🥔 Basis": ["Kartoffeln"],
+            "🥛 Kühlung / Ei": ["Eier", "Optional: Käse"],
+            "🛒 Obst & Gemüse": ["Zwiebel", "Optional: Gemüse"],
+            "🥢 Basics": ["Öl oder Butter", "Salz"],
+            "🥩 Optional Fleisch": ["Optional: Speck"]
+        },
+        "steps": ["Kartoffeln kochen oder vorhandene Kartoffeln verwenden.", "Kartoffeln in Scheiben schneiden.", "Zwiebel in Öl oder Butter anbraten.", "Kartoffeln dazugeben und goldbraun braten.", "Eier darüber geben und stocken lassen.", "Würzen und servieren."]
+    },
+    "13. Reis mit Ei und Gemüse": {
+        "info": {"time": "15–20 Min", "budget": "Sehr günstig", "level": "Sehr einfach", "family": "Reste-Retter"},
+        "description": clean_text("""
+            Reis ist da, Eier sind da, Gemüse ist egal ob frisch oder TK.
+            Das ist genau Cora: aus wenig ein Essen machen.
+        """),
+        "ingredients": ["Reis oder Reisreste", "Eier", "TK-Gemüse oder Karotten", "Zwiebel", "Öl", "Salz", "Optional: Sojasauce"],
+        "shopping": {
+            "🍚 Basis": ["Reis"],
+            "🥛 Kühlung / Ei": ["Eier"],
+            "🛒 Gemüse": ["TK-Gemüse oder Karotten", "Zwiebel"],
+            "🥢 Basics": ["Öl", "Salz", "Optional: Sojasauce"]
+        },
+        "steps": ["Reis kochen oder Reisreste verwenden.", "Zwiebel und Gemüse in Öl anbraten.", "Reis dazugeben und anrösten.", "Eier einrühren.", "Mit Salz oder Sojasauce abschmecken."]
+    },
+    "14. Schneller Nudelauflauf": {
+        "info": {"time": "35–40 Min", "budget": "Günstig", "level": "Einfach", "family": "Ofen / satt"},
+        "description": clean_text("""
+            Wenn Nudeln, Milch und Käse da sind, wird daraus ein Auflauf.
+            Gut, wenn alle satt werden sollen und der Ofen den Rest macht.
+        """),
+        "ingredients": ["Nudeln", "Milch oder Obers", "Käse", "Eier", "Salz", "Optional: Schinken, Gemüse oder Tomatensauce"],
+        "shopping": {
+            "🍚 Trockenware": ["Nudeln"],
+            "🥛 Kühlung / Ei": ["Milch oder Obers", "Käse", "Eier"],
+            "🥩 Optional": ["Optional: Schinken"],
+            "🛒 Gemüse / Sauce": ["Optional: Gemüse oder Tomatensauce"],
+            "🥢 Gewürze": ["Salz"]
+        },
+        "steps": ["Nudeln vorkochen.", "Milch/Obers mit Ei und Salz verrühren.", "Optional Gemüse oder Schinken dazugeben.", "Alles in eine Form geben.", "Käse darüber.", "Bei 180 °C ca. 25 Minuten backen."]
+    },
+    "15. Reste-Suppe aus Kartoffeln und Gemüse": {
+        "info": {"time": "25–30 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Warm / ruhig"},
+        "description": clean_text("""
+            Suppe ist perfekt, wenn Reste weg müssen.
+            Kartoffeln, Gemüse, Brühe — fertig ist ein ruhiges Essen.
+        """),
+        "ingredients": ["Kartoffeln", "Gemüse oder TK-Gemüse", "Zwiebel", "Brühe", "Öl", "Optional: Würstel, Brot oder Obers"],
+        "shopping": {
+            "🥔 Basis": ["Kartoffeln"],
+            "🛒 Gemüse": ["Gemüse oder TK-Gemüse", "Zwiebel"],
+            "🥢 Gewürze": ["Brühe", "Öl"],
+            "🥩 Optional": ["Optional: Würstel"],
+            "🍞 Optional": ["Optional: Brot"],
+            "🥛 Optional": ["Optional: Obers"]
+        },
+        "steps": ["Zwiebel in Öl anbraten.", "Kartoffeln und Gemüse klein schneiden.", "Alles mit Brühe aufgießen.", "20 Minuten kochen.", "Optional pürieren.", "Optional Würstel, Brot oder Obers dazu."]
+    },
+    "16. Palatschinken pikant gefüllt": {
+        "info": {"time": "25 Min", "budget": "Günstig", "level": "Einfach", "family": "Kinder mögen es"},
+        "description": clean_text("""
+            Wenn Mehl, Milch und Eier da sind, geht immer etwas.
+            Pikant gefüllt wird daraus ein richtiges Essen.
+        """),
+        "ingredients": ["Mehl", "Milch", "Eier", "Salz", "Öl", "Optional: Käse, Schinken, Gemüse oder Reste"],
+        "shopping": {
+            "🍚 Vorrat": ["Mehl"],
+            "🥛 Kühlung / Ei": ["Milch", "Eier", "Optional: Käse"],
+            "🥩 Optional": ["Optional: Schinken"],
+            "🛒 Optional": ["Optional: Gemüse oder Reste"],
+            "🥢 Basics": ["Salz", "Öl"]
+        },
+        "steps": ["Mehl, Milch, Eier und Salz zu Teig rühren.", "Palatschinken dünn ausbacken.", "Mit Käse, Schinken, Gemüse oder Resten füllen.", "Kurz einklappen oder überbacken."]
+    },
+    "17. Ofenkartoffeln mit Dip": {
+        "info": {"time": "40 Min", "budget": "Sehr günstig", "level": "Sehr einfach", "family": "Wenig Arbeit"},
+        "description": clean_text("""
+            Kartoffeln in den Ofen, Dip dazu, fertig.
+            Wenig Kopf, wenig Chaos, trotzdem warm und sättigend.
+        """),
+        "ingredients": ["Kartoffeln", "Öl", "Salz", "Joghurt oder Sauerrahm", "Knoblauch", "Optional: Käse oder Gemüse"],
+        "shopping": {
+            "🥔 Basis": ["Kartoffeln"],
+            "🥛 Kühlung": ["Joghurt oder Sauerrahm", "Optional: Käse"],
+            "🛒 Gemüse": ["Knoblauch", "Optional: Gemüse"],
+            "🥢 Basics": ["Öl", "Salz"]
+        },
+        "steps": ["Kartoffeln waschen und schneiden.", "Mit Öl und Salz mischen.", "Bei 200 °C ca. 30–35 Minuten backen.", "Dip aus Joghurt/Sauerrahm, Knoblauch und Salz rühren.", "Servieren."]
+    },
+    "18. Schnelle Grießnockerl- oder Nudelsuppe": {
+        "info": {"time": "15–25 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Krank / müde / warm"},
+        "description": clean_text("""
+            Wenn der Tag schwer ist, ist Suppe oft genug.
+            Warm, schnell, kein Drama.
+        """),
+        "ingredients": ["Brühe", "Suppennudeln oder Grießnockerl", "Karotten", "Optional: Ei", "Optional: Schnittlauch"],
+        "shopping": {
+            "🥢 Gewürze": ["Brühe"],
+            "🍚 Trockenware": ["Suppennudeln oder Grießnockerl"],
+            "🛒 Gemüse": ["Karotten", "Optional: Schnittlauch"],
+            "🥛 Optional": ["Optional: Ei"]
+        },
+        "steps": ["Brühe erhitzen.", "Karotten klein schneiden und mitkochen.", "Suppennudeln oder Nockerl dazugeben.", "Kochen bis alles weich ist.", "Optional Ei oder Schnittlauch dazu."]
+    },
+    "19. Toast-Pizza Familienrettung": {
+        "info": {"time": "10–15 Min", "budget": "Günstig", "level": "Sehr einfach", "family": "Kinder / schnell"},
+        "description": clean_text("""
+            Toast, Tomatensauce, Käse — mehr braucht es oft nicht.
+            Perfekt, wenn wirklich keine Energie mehr da ist.
+        """),
+        "ingredients": ["Toast oder Brot", "Tomatensauce oder Ketchup", "Käse", "Optional: Schinken, Mais, Paprika oder Reste"],
+        "shopping": {
+            "🍞 Brot": ["Toast oder Brot"],
+            "🥫 Sauce": ["Tomatensauce oder Ketchup"],
+            "🥛 Kühlung": ["Käse"],
+            "🥩 Optional": ["Optional: Schinken"],
+            "🛒 Optional": ["Optional: Mais, Paprika oder Reste"]
+        },
+        "steps": ["Toast oder Brot auf ein Blech legen.", "Mit Sauce bestreichen.", "Käse und Belag darauf.", "Bei 200 °C ca. 8–10 Minuten backen."]
+    },
+    "20. Milchreis / süßer Reis": {
+        "info": {"time": "30 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Süß / sättigend"},
+        "description": clean_text("""
+            Wenn Reis und Milch da sind, wird daraus ein warmes süßes Essen.
+            Gut für Kinder, Abendessen oder Restetag.
+        """),
+        "ingredients": ["Reis oder Milchreis", "Milch", "Zucker", "Zimt", "Optional: Apfelmus oder Obst"],
+        "shopping": {
+            "🍚 Basis": ["Reis oder Milchreis"],
+            "🥛 Kühlung": ["Milch"],
+            "🍚 Vorrat / Süß": ["Zucker", "Zimt"],
+            "🛒 Optional": ["Optional: Apfelmus oder Obst"]
+        },
+        "steps": ["Milch erhitzen.", "Reis dazugeben und langsam weich kochen.", "Regelmäßig rühren.", "Mit Zucker und Zimt abschmecken.", "Optional mit Apfelmus oder Obst servieren."]
+    }
+}
+
+recipes.update(family_recipes)
+
+
+
 
 
 # =========================================================
@@ -877,34 +1032,17 @@ recipes = {
 # =========================================================
 baking_recipes = {
     "1. Schneller Kakao-Blechkuchen": {
-        "info": {
-            "time": "25–30 Min Backzeit",
-            "budget": "Günstig",
-            "level": "Einfach",
-            "family": "Kinderfreundlich"
-        },
+        "info": {"time": "25–30 Min", "budget": "Günstig", "level": "Einfach", "family": "Kinderfreundlich"},
         "description": clean_text("""
             Einfacher Familienkuchen aus Standard-Zutaten.
             Perfekt, wenn Kinder etwas Süßes wollen und kein Extra-Einkauf passieren soll.
         """),
-        "ingredients": [
-            "250 g Mehl",
-            "180 g Zucker",
-            "3 Eier",
-            "150 ml Milch",
-            "100 ml Öl",
-            "3 EL Kakao",
-            "1 Pkg Backpulver"
-        ],
-        "missing_check": [
-            "Mehl",
-            "Zucker",
-            "Eier",
-            "Milch",
-            "Öl oder Butter",
-            "Kakao",
-            "Backpulver"
-        ],
+        "ingredients": ["250 g Mehl", "180 g Zucker", "3 Eier", "150 ml Milch", "100 ml Öl", "3 EL Kakao", "1 Pkg Backpulver"],
+        "shopping": {
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Kakao", "Backpulver"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
         "steps": [
             "Backofen auf 180 °C Ober-/Unterhitze vorheizen.",
             "Mehl, Zucker, Kakao und Backpulver mischen.",
@@ -916,33 +1054,17 @@ baking_recipes = {
         ]
     },
     "2. Cora Waffeln": {
-        "info": {
-            "time": "20 Min",
-            "budget": "Sehr günstig",
-            "level": "Einfach",
-            "family": "Perfekt mit Kindern"
-        },
+        "info": {"time": "20 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Perfekt mit Kindern"},
         "description": clean_text("""
             Waffeln retten viele Nachmittage.
             Mehl, Milch, Eier, Zucker — fertig.
         """),
-        "ingredients": [
-            "250 g Mehl",
-            "2 Eier",
-            "300 ml Milch",
-            "2 EL Zucker",
-            "1 Prise Salz",
-            "1 TL Backpulver",
-            "Öl oder Butter fürs Waffeleisen"
-        ],
-        "missing_check": [
-            "Mehl",
-            "Eier",
-            "Milch",
-            "Zucker",
-            "Backpulver",
-            "Öl oder Butter"
-        ],
+        "ingredients": ["250 g Mehl", "2 Eier", "300 ml Milch", "2 EL Zucker", "1 Prise Salz", "1 TL Backpulver", "Öl oder Butter fürs Waffeleisen"],
+        "shopping": {
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Backpulver", "Salz"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
         "steps": [
             "Alle Zutaten zu einem glatten Teig rühren.",
             "Waffeleisen vorheizen.",
@@ -952,38 +1074,167 @@ baking_recipes = {
         ]
     },
     "3. Bananen-Pancakes": {
-        "info": {
-            "time": "15–20 Min",
-            "budget": "Günstig",
-            "level": "Sehr einfach",
-            "family": "Gut für reife Bananen"
-        },
+        "info": {"time": "15–20 Min", "budget": "Günstig", "level": "Sehr einfach", "family": "Gut für reife Bananen"},
         "description": clean_text("""
             Gut, wenn Bananen weg müssen.
             Schnell, weich, familientauglich.
         """),
-        "ingredients": [
-            "2 reife Bananen",
-            "2 Eier",
-            "120 g Mehl",
-            "120 ml Milch",
-            "1 TL Backpulver",
-            "Öl oder Butter"
-        ],
-        "missing_check": [
-            "Bananen",
-            "Eier",
-            "Mehl",
-            "Milch",
-            "Backpulver",
-            "Öl oder Butter"
-        ],
+        "ingredients": ["2 reife Bananen", "2 Eier", "120 g Mehl", "120 ml Milch", "1 TL Backpulver", "Öl oder Butter"],
+        "shopping": {
+            "🛒 Obst": ["Bananen"],
+            "🍚 Vorrat / Backen": ["Mehl", "Backpulver"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
         "steps": [
             "Bananen zerdrücken.",
             "Eier, Mehl, Milch und Backpulver einrühren.",
             "Pfanne erhitzen und etwas Öl oder Butter verwenden.",
             "Kleine Pancakes ausbacken.",
             "Warm servieren."
+        ]
+    },
+    "4. Apfel-Zimt-Blechkuchen": {
+        "info": {"time": "35–40 Min", "budget": "Günstig", "level": "Einfach", "family": "Wochenende / Besuch"},
+        "description": clean_text("""
+            Ein einfacher Kuchen, wenn Äpfel da sind.
+            Warm, weich, familientauglich und ohne komplizierte Schritte.
+        """),
+        "ingredients": ["3 Äpfel", "250 g Mehl", "150 g Zucker", "3 Eier", "120 ml Milch", "100 ml Öl", "1 Pkg Backpulver", "Zimt"],
+        "shopping": {
+            "🛒 Obst": ["Äpfel"],
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Backpulver", "Zimt"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
+        "steps": [
+            "Backofen auf 180 °C vorheizen.",
+            "Äpfel schälen oder gut waschen und klein schneiden.",
+            "Mehl, Zucker, Backpulver und Zimt mischen.",
+            "Eier, Milch und Öl dazugeben und rühren.",
+            "Äpfel unterheben.",
+            "In Form oder Blech geben und ca. 30–35 Minuten backen."
+        ]
+    },
+    "5. Schoko-Muffins schnell": {
+        "info": {"time": "20–25 Min", "budget": "Günstig", "level": "Einfach", "family": "Kinder / Schule"},
+        "description": clean_text("""
+            Kleine Portionen, schnell fertig.
+            Gut für Kinder, Besuch oder wenn etwas Süßes gebraucht wird.
+        """),
+        "ingredients": ["200 g Mehl", "120 g Zucker", "2 Eier", "120 ml Milch", "80 ml Öl", "2 EL Kakao", "1/2 Pkg Backpulver", "Optional: Schokostücke"],
+        "shopping": {
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Kakao", "Backpulver", "Optional: Schokostücke"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
+        "steps": [
+            "Backofen auf 180 °C vorheizen.",
+            "Trockene Zutaten mischen.",
+            "Eier, Milch und Öl dazugeben.",
+            "Kurz rühren, nicht übertreiben.",
+            "In Muffinformen füllen.",
+            "Ca. 18–22 Minuten backen."
+        ]
+    },
+    "6. Arme Ritter süß": {
+        "info": {"time": "10–15 Min", "budget": "Sehr günstig", "level": "Sehr einfach", "family": "Reste retten"},
+        "description": clean_text("""
+            Perfekt für altes Brot oder Toast.
+            Süß, schnell und fast immer mit Dingen möglich, die daheim sind.
+        """),
+        "ingredients": ["Altes Brot oder Toast", "2 Eier", "150 ml Milch", "Zucker", "Zimt", "Butter oder Öl"],
+        "shopping": {
+            "🍞 Brot / Vorrat": ["Altes Brot oder Toast"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🍚 Vorrat / Backen": ["Zucker", "Zimt"],
+            "🥢 Basics": ["Butter oder Öl"]
+        },
+        "steps": [
+            "Eier, Milch, Zucker und Zimt verquirlen.",
+            "Brot oder Toast kurz darin wenden.",
+            "In Butter oder Öl goldbraun braten.",
+            "Warm servieren."
+        ]
+    },
+    "7. Joghurt-Becherkuchen": {
+        "info": {"time": "30–35 Min", "budget": "Günstig", "level": "Einfach", "family": "Ohne Waage möglich"},
+        "description": clean_text("""
+            Becherkuchen ist perfekt, wenn man nicht lang messen will.
+            Joghurtbecher als Maß, fertig.
+        """),
+        "ingredients": ["1 Becher Joghurt", "2 Becher Mehl", "1 Becher Zucker", "1/2 Becher Öl", "3 Eier", "1 Pkg Backpulver", "Optional: Kakao oder Obst"],
+        "shopping": {
+            "🥛 Kühlung / Ei": ["Joghurt", "Eier"],
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Backpulver", "Optional: Kakao"],
+            "🥢 Basics": ["Öl"],
+            "🛒 Obst": ["Optional: Obst"]
+        },
+        "steps": [
+            "Backofen auf 180 °C vorheizen.",
+            "Joghurt in eine Schüssel geben und Becher als Maß behalten.",
+            "Alle Zutaten dazugeben und glatt rühren.",
+            "Optional Kakao oder Obst unterheben.",
+            "In eine Form geben und ca. 30 Minuten backen."
+        ]
+    },
+    "8. Schnelle Zimtschnecken aus Blätterteig": {
+        "info": {"time": "20 Min", "budget": "Günstig bis mittel", "level": "Sehr einfach", "family": "Schnell / Besuch"},
+        "description": clean_text("""
+            Wenn Blätterteig da ist, geht das fast ohne Denken.
+            Aufrollen, schneiden, backen.
+        """),
+        "ingredients": ["1 Rolle Blätterteig", "Butter", "Zucker", "Zimt", "Optional: Glasur aus Staubzucker und wenig Wasser"],
+        "shopping": {
+            "🥛 Kühlung": ["Blätterteig", "Butter"],
+            "🍚 Vorrat / Backen": ["Zucker", "Zimt", "Optional: Staubzucker"]
+        },
+        "steps": [
+            "Backofen nach Packung vorheizen.",
+            "Blätterteig ausrollen.",
+            "Mit Butter bestreichen und Zucker/Zimt darüber streuen.",
+            "Einrollen und in Scheiben schneiden.",
+            "Ca. 12–15 Minuten backen.",
+            "Optional mit Glasur beträufeln."
+        ]
+    },
+    "9. Kinder-Kekse einfach": {
+        "info": {"time": "30 Min", "budget": "Günstig", "level": "Einfach", "family": "Kinder helfen mit"},
+        "description": clean_text("""
+            Einfache Kekse zum Ausstechen oder Formen.
+            Gut, wenn Kinder mithelfen wollen.
+        """),
+        "ingredients": ["250 g Mehl", "100 g Zucker", "125 g Butter", "1 Ei", "1 Prise Salz", "Optional: Vanillezucker"],
+        "shopping": {
+            "🍚 Vorrat / Backen": ["Mehl", "Zucker", "Salz", "Optional: Vanillezucker"],
+            "🥛 Kühlung / Ei": ["Butter", "Ei"]
+        },
+        "steps": [
+            "Alle Zutaten zu einem Teig kneten.",
+            "Kurz kalt stellen, wenn Zeit ist.",
+            "Ausrollen oder kleine Kugeln formen.",
+            "Bei 180 °C ca. 10–12 Minuten backen.",
+            "Abkühlen lassen."
+        ]
+    },
+    "10. Palatschinken / Pancakes Basis": {
+        "info": {"time": "15–20 Min", "budget": "Sehr günstig", "level": "Einfach", "family": "Süß oder herzhaft"},
+        "description": clean_text("""
+            Kein klassisches Backrohr-Rezept, aber ein Familienretter.
+            Mehl, Milch, Eier — daraus wird immer etwas.
+        """),
+        "ingredients": ["200 g Mehl", "2 Eier", "350 ml Milch", "1 Prise Salz", "Öl oder Butter für die Pfanne", "Optional: Marmelade, Nutella, Apfelmus"],
+        "shopping": {
+            "🍚 Vorrat / Backen": ["Mehl", "Salz", "Optional: Marmelade / Nutella / Apfelmus"],
+            "🥛 Kühlung / Ei": ["Eier", "Milch"],
+            "🥢 Basics": ["Öl oder Butter"]
+        },
+        "steps": [
+            "Mehl, Eier, Milch und Salz glatt rühren.",
+            "Pfanne erhitzen und leicht fetten.",
+            "Dünne Palatschinken ausbacken.",
+            "Süß oder herzhaft füllen.",
+            "Sofort servieren."
         ]
     }
 }
@@ -995,18 +1246,278 @@ baking_recipes = {
 if "selected_recipe" not in st.session_state:
     st.session_state.selected_recipe = list(recipes.keys())[0]
 
+if "selected_baking" not in st.session_state:
+    st.session_state.selected_baking = list(baking_recipes.keys())[0]
+
 if "reset_counter" not in st.session_state:
     st.session_state.reset_counter = 0
 
-if "kitchen_mode" not in st.session_state:
-    st.session_state.kitchen_mode = "🍲 Kochen"
+if "view" not in st.session_state:
+    st.session_state.view = "🏠 Start"
+
+if "photos_checked" not in st.session_state:
+    st.session_state.photos_checked = False
+
+if "recipe_history" not in st.session_state:
+    st.session_state.recipe_history = []
+
+if "favorite_recipes" not in st.session_state:
+    st.session_state.favorite_recipes = []
+
+
+# =========================================================
+# EXTRA HELPERS
+# =========================================================
+def set_view(view_name):
+    st.session_state.view = view_name
+
+
+def add_history(kind, name):
+    """Keep a small local session history without duplicates."""
+    entry = {"kind": kind, "name": name}
+    current = st.session_state.get("recipe_history", [])
+    current = [item for item in current if not (item.get("kind") == kind and item.get("name") == name)]
+    current.insert(0, entry)
+    st.session_state.recipe_history = current[:8]
+
+
+def toggle_favorite(kind, name):
+    key = f"{kind}|{name}"
+    favorites = st.session_state.get("favorite_recipes", [])
+    if key in favorites:
+        favorites.remove(key)
+    else:
+        favorites.insert(0, key)
+    st.session_state.favorite_recipes = favorites[:12]
+
+
+def is_favorite(kind, name):
+    return f"{kind}|{name}" in st.session_state.get("favorite_recipes", [])
+
+
+def open_history_item(kind, name):
+    if kind == "cook" and name in recipes:
+        st.session_state.selected_recipe = name
+        set_view("🍲 Kochen")
+    elif kind == "bake" and name in baking_recipes:
+        st.session_state.selected_baking = name
+        set_view("🍰 Backen")
+
+
+def render_history():
+    st.markdown('<div class="section-title">🕘 Verlauf & Favoriten</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="cora-card">
+        <div class="card-title">🕘 Zuletzt geöffnet</div>
+        <div class="card-text">
+            Cora merkt sich in dieser Sitzung, was du zuletzt gekocht oder gebacken hast.<br>
+            Schnell wiederfinden. Liste nochmal öffnen. Favorit markieren.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    history = st.session_state.get("recipe_history", [])
+    if not history:
+        st.markdown('<div class="list-item">Noch kein Verlauf. Öffne ein Rezept oder eine Backidee, dann erscheint es hier.</div>', unsafe_allow_html=True)
+    else:
+        for idx, item in enumerate(history):
+            kind = item.get("kind")
+            name = item.get("name")
+            icon = "🍲" if kind == "cook" else "🍰"
+            fav = "⭐" if is_favorite(kind, name) else "☆"
+            st.markdown(f'<div class="list-item">{icon} {fav} {name}</div>', unsafe_allow_html=True)
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                if st.button("🔁 Öffnen", key=f"hist_open_{idx}_{kind}"):
+                    open_history_item(kind, name)
+                    st.rerun()
+            with c2:
+                if st.button("⭐ Favorit", key=f"hist_fav_{idx}_{kind}"):
+                    toggle_favorite(kind, name)
+                    st.rerun()
+            with c3:
+                if kind == "cook":
+                    if st.button("🛒 Liste", key=f"hist_shop_{idx}_{kind}"):
+                        st.session_state.selected_recipe = name
+                        set_view("🛒 Einkauf")
+                        st.rerun()
+                else:
+                    if st.button("🛒 Back-Liste", key=f"hist_bakeshop_{idx}_{kind}"):
+                        st.session_state.selected_baking = name
+                        set_view("🍰 Backen")
+                        st.rerun()
+
+    favorites = st.session_state.get("favorite_recipes", [])
+    if favorites:
+        st.markdown('<div class="section-title">⭐ Familienfavoriten</div>', unsafe_allow_html=True)
+        for idx, fav_key in enumerate(favorites[:8]):
+            try:
+                kind, name = fav_key.split("|", 1)
+            except ValueError:
+                continue
+            icon = "🍲" if kind == "cook" else "🍰"
+            st.markdown(f'<div class="list-item">{icon} ⭐ {name}</div>', unsafe_allow_html=True)
+
+    c_clear, c_home = st.columns(2)
+    with c_clear:
+        if st.button("🧹 Verlauf löschen", key="clear_history"):
+            st.session_state.recipe_history = []
+            st.rerun()
+    with c_home:
+        if st.button("🏠 Zur Hauptansicht", key="history_home"):
+            set_view("🏠 Start")
+            st.rerun()
+
+
+def show_found_items_card(items_by_category):
+    st.markdown('<div class="section-title">✨ Cora hat sortiert</div>', unsafe_allow_html=True)
+    for category, items in items_by_category.items():
+        st.markdown(f'<div class="shopping-category-title">{category}</div>', unsafe_allow_html=True)
+        for item in items:
+            st.markdown(f'<div class="list-item">✅ {item}</div>', unsafe_allow_html=True)
+
+
+def build_export_text(title, name, shopping, prefix="shop"):
+    open_lines = []
+    done_lines = []
+    total_count = 0
+    done_count = 0
+
+    for category, items in shopping.items():
+        category_open = []
+        category_done = []
+        for item in items:
+            key = f"{prefix}_{st.session_state.reset_counter}_{name}_{category}_{item}"
+            is_done = bool(st.session_state.get(key, False))
+            total_count += 1
+            if is_done:
+                done_count += 1
+                category_done.append(f"✅ {item}")
+            else:
+                category_open.append(f"☐ {item}")
+
+        if category_open:
+            open_lines.append(category)
+            open_lines.extend(category_open)
+            open_lines.append("")
+        if category_done:
+            done_lines.append(category)
+            done_lines.extend(category_done)
+            done_lines.append("")
+
+    open_count = total_count - done_count
+    lines = [
+        "🛒 Cora Einkaufsliste",
+        "",
+        f"{title}: {name}",
+        "",
+        "NOCH KAUFEN",
+    ]
+    lines.extend(open_lines if open_lines else ["Alles erledigt ✅", ""])
+    lines.append("ERLEDIGT")
+    lines.extend(done_lines if done_lines else ["Noch nichts abgehakt.", ""])
+    lines.extend([
+        "STATUS",
+        f"✅ Erledigt: {done_count} / {total_count}",
+        f"☐ Noch offen: {open_count}",
+    ])
+    return "\n".join(lines), done_count, open_count, total_count
+
+
+def render_shopping_mode(title, name, shopping, prefix="shop"):
+    st.markdown('<div class="section-title">🛒 Cora Einkaufsmodus — abhaken fertig</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="cora-card">
+        <div class="card-title">🛒 Entspannt einkaufen</div>
+        <div class="card-text">
+            Im Geschäft musst du Cora nicht alles erzählen.<br>
+            Liste öffnen. Artikel abhaken. Weitergehen.<br><br>
+            Wenn du festhängst: Cora fragen.<br>
+            Beispiel: ausverkauft, Budget knapp oder Aktion unsicher.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    for category, items in shopping.items():
+        st.markdown(f'<div class="shopping-category-title">{category}</div>', unsafe_allow_html=True)
+        for item in items:
+            key = f"{prefix}_{st.session_state.reset_counter}_{name}_{category}_{item}"
+            st.checkbox(item, key=key)
+
+    shopping_text, done_count, open_count, total_count = build_export_text(title, name, shopping, prefix=prefix)
+
+    st.markdown(f"""
+    <div class="cora-card">
+        <div class="card-title">📌 Einkaufsstand</div>
+        <div class="card-text">
+            ✅ Erledigt: <b>{done_count}</b> / {total_count}<br>
+            ⏳ Noch offen: <b>{open_count}</b><br><br>
+            Cora sagt: Nicht reden. Nicht denken. Nur abhaken.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    with st.expander("📋 Fertige Liste anzeigen / kopieren"):
+        st.text_area("Cora Einkaufsliste", shopping_text, height=300, label_visibility="collapsed")
+
+    st.download_button(
+        label="⬇️ Einkaufsliste als TXT speichern",
+        data=shopping_text,
+        file_name="cora_einkaufsliste.txt",
+        mime="text/plain"
+    )
+
+    col_reset, col_done = st.columns(2)
+    with col_reset:
+        if st.button("🔄 Liste zurücksetzen", key=f"reset_{prefix}"):
+            st.session_state.reset_counter += 1
+            st.rerun()
+    with col_done:
+        if st.button("✅ Einkauf fertig", key=f"done_{prefix}"):
+            st.success("Einkauf erledigt. Cora sagt: Stark. Heim, kochen, fertig.")
+
+
+def render_recipe(recipe_name):
+    add_history("cook", recipe_name)
+    recipe = recipes[recipe_name]
+    description_html = recipe["description"].replace("\n", "<br>")
+    st.markdown(f"""
+    <div class="cora-card">
+        <div class="card-title">{recipe_name}</div>
+        <div class="card-text">{description_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    show_info_card(recipe)
+    show_simple_list("Zutaten", recipe["ingredients"], icon="🧾")
+    render_shopping_mode("Gericht", recipe_name, recipe["shopping"], prefix="cook")
+    st.markdown('<div class="section-title">👨‍🍳 Kochschritte</div>', unsafe_allow_html=True)
+    for i, step in enumerate(recipe["steps"], start=1):
+        st.markdown(f'<div class="list-item"><b>{i}.</b> {step}</div>', unsafe_allow_html=True)
+
+
+def render_baking(bake_name):
+    add_history("bake", bake_name)
+    bake = baking_recipes[bake_name]
+    description_html = bake["description"].replace("\n", "<br>")
+    st.markdown(f"""
+    <div class="cora-card">
+        <div class="card-title">{bake_name}</div>
+        <div class="card-text">{description_html}</div>
+    </div>
+    """, unsafe_allow_html=True)
+    show_info_card(bake)
+    show_simple_list("Back-Zutaten", bake["ingredients"], icon="🧾")
+    render_shopping_mode("Backidee", bake_name, bake["shopping"], prefix="bake")
+    st.markdown('<div class="section-title">👩‍🍳 Backschritte</div>', unsafe_allow_html=True)
+    for i, step in enumerate(bake["steps"], start=1):
+        st.markdown(f'<div class="list-item"><b>{i}.</b> {step}</div>', unsafe_allow_html=True)
 
 
 # =========================================================
 # CORA IMAGE
 # =========================================================
 if CORA_IMAGE is not None and CORA_IMAGE.exists():
-    st.image(str(CORA_IMAGE), use_column_width=True)
+    st.image(str(CORA_IMAGE), use_container_width=True)
 else:
     st.error("Cora Bild nicht gefunden.")
     st.info(f"App-Ordner: {APP_DIR}")
@@ -1027,212 +1538,153 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-
 # =========================================================
-# PHOTO-FIRST V1 FLOW
+# NAVIGATION — STABLE 2 ROWS
 # =========================================================
 st.markdown("""
 <div class="cora-card">
-    <div class="card-title">📸 Was ist da?</div>
-    <div class="card-text">
-        Keine Lust alles zu checken?<br>
-        Mach 3 Bilder: Kühlschrank, Vorrat, Tiefkühl / Reste.<br><br>
-        Cora sortiert. Cora zaubert Ideen. Was fehlt, kommt auf die Einkaufsliste.
-    </div>
+    <div class="card-title">🧭 Schnell finden</div>
+    <div class="card-text">Ein Bereich wählen. Kein Suchen. Kein Scroll-Chaos.</div>
 </div>
 """, unsafe_allow_html=True)
 
-uploaded_photos = st.file_uploader(
-    "3 Bilder hochladen",
-    type=["png", "jpg", "jpeg", "webp"],
-    accept_multiple_files=True,
-    label_visibility="collapsed"
-)
+nav_rows = [
+    ["🏠 Start", "📸 Was ist da?", "🍲 Kochen", "🍰 Backen"],
+    ["🛒 Einkauf", "🕘 Verlauf", "🎙️ Cora Hilfe", ""],
+]
 
-if uploaded_photos:
-    st.markdown(f"""
-    <div class="list-item">
-        ✅ {len(uploaded_photos)} Bild(er) geladen. Für V1 reicht das als Foto-Flow.
-    </div>
-    """, unsafe_allow_html=True)
+for row_index, row_items in enumerate(nav_rows):
+    nav_cols = st.columns(4)
+    for col, item in zip(nav_cols, row_items):
+        with col:
+            if not item:
+                st.markdown("&nbsp;", unsafe_allow_html=True)
+                continue
+            is_active = st.session_state.view == item
+            label = f"✅ {item}" if is_active else item
+            if st.button(label, key=f"nav_{row_index}_{item}"):
+                set_view(item)
+                st.rerun()
 
-    cols = st.columns(3)
-    for idx, photo in enumerate(uploaded_photos[:3]):
-        with cols[idx % 3]:
-            st.image(photo, use_column_width=True)
 
-    if st.button("✨ Cora prüfen und sortieren"):
-        st.session_state["photos_checked"] = True
-
-if st.session_state.get("photos_checked"):
-    demo_found_items = {
-        "🍚 Basis": ["Reis", "Nudeln", "Kartoffeln"],
-        "🥦 Gemüse / TK": ["TK Asia Gemüse", "Karotten", "Zwiebel"],
-        "🥩 Eiweiß": ["Eier", "Putenfleisch oder Rest-Fleisch"],
-        "🍰 Backen": ["Mehl", "Zucker", "Milch", "Kakao"]
-    }
-    show_found_items_card(demo_found_items)
-
+# =========================================================
+# START / PHOTO FLOW
+# =========================================================
+if st.session_state.view in ["🏠 Start", "📸 Was ist da?"]:
+    st.markdown('<div class="section-title">📸 Was ist da?</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="cora-card">
-        <div class="card-title">💡 Cora Ideen</div>
+        <div class="card-title">📸 3 Bilder reichen</div>
         <div class="card-text">
-            🍲 Asia-Reis mit Gemüse und Ei<br>
-            🍝 Nudelpfanne mit Karotten und Zwiebel<br>
-            🥔 Kartoffelpfanne<br>
-            🍰 Schneller Kakao-Blechkuchen
+            Keine Lust alles zu checken?<br>
+            Mach 3 Bilder: Kühlschrank, Vorrat, Tiefkühl / Reste.<br><br>
+            Cora sortiert. Cora zaubert Ideen. Was fehlt, kommt auf die Einkaufsliste.
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="cora-card">
-        <div class="card-title">🛒 Was fehlt?</div>
-        <div class="card-text">
-            Für die Demo: Cora würde hier fehlende Zutaten automatisch sammeln.<br>
-            Beispiel: Sojasauce, Backpulver, Butter.
+    uploaded_photos = st.file_uploader(
+        "3 Bilder hochladen",
+        type=["png", "jpg", "jpeg", "webp"],
+        accept_multiple_files=True,
+        label_visibility="collapsed"
+    )
+
+    if uploaded_photos:
+        st.markdown(f'<div class="list-item">✅ {len(uploaded_photos)} Bild(er) geladen. Für V1 reicht das als Foto-Flow.</div>', unsafe_allow_html=True)
+        cols = st.columns(3)
+        for idx, photo in enumerate(uploaded_photos[:3]):
+            with cols[idx % 3]:
+                st.image(photo, use_container_width=True)
+        if st.button("✨ Cora prüfen und sortieren"):
+            st.session_state.photos_checked = True
+            st.rerun()
+
+    if st.session_state.photos_checked:
+        demo_found_items = {
+            "🍚 Basis": ["Reis", "Nudeln", "Kartoffeln"],
+            "🥦 Gemüse / TK": ["TK Asia Gemüse", "Karotten", "Zwiebel"],
+            "🥩 Eiweiß": ["Eier", "Putenfleisch oder Rest-Fleisch"],
+            "🍰 Backen": ["Mehl", "Zucker", "Milch", "Kakao"]
+        }
+        show_found_items_card(demo_found_items)
+        st.markdown("""
+        <div class="cora-card">
+            <div class="card-title">💡 Cora Ideen</div>
+            <div class="card-text">
+                🍲 Asia-Reis mit Gemüse und Ei<br>
+                🍝 Nudelpfanne mit Karotten und Zwiebel<br>
+                🥔 Kartoffelpfanne<br>
+                🍰 Schneller Kakao-Blechkuchen
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-st.markdown('<div class="section-title">🧭 Was brauchst du jetzt?</div>', unsafe_allow_html=True)
-st.session_state.kitchen_mode = st.radio(
-    "Modus wählen",
-    ["🍲 Kochen", "🍰 Backen", "🛒 Einkauf"],
-    index=["🍲 Kochen", "🍰 Backen", "🛒 Einkauf"].index(st.session_state.kitchen_mode),
-    horizontal=True,
-    label_visibility="collapsed"
-)
-
-
-# =========================================================
-# RECIPE SELECTOR
-# =========================================================
-st.markdown('<div class="section-title">🍳 Top 10 Asia — Was kochen wir heute?</div>', unsafe_allow_html=True)
-
-recipe_names = list(recipes.keys())
-
-selected_recipe = st.radio(
-    "Gericht auswählen",
-    recipe_names,
-    index=recipe_names.index(st.session_state.selected_recipe),
-    label_visibility="collapsed"
-)
-
-st.session_state.selected_recipe = selected_recipe
-recipe = recipes[selected_recipe]
+    st.markdown('<div class="section-title">🧭 Was brauchst du jetzt?</div>', unsafe_allow_html=True)
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("🍲 Koch mir was", key="go_cook_from_start"):
+            set_view("🍲 Kochen")
+            st.rerun()
+    with c2:
+        if st.button("🍰 Back mir was", key="go_bake_from_start"):
+            set_view("🍰 Backen")
+            st.rerun()
+    with c3:
+        if st.button("🛒 Was fehlt?", key="go_shop_from_start"):
+            set_view("🛒 Einkauf")
+            st.rerun()
 
 
 # =========================================================
-# RECIPE DESCRIPTION
+# COOKING VIEW
 # =========================================================
-description_html = recipe["description"].replace("\n", "<br>")
-
-st.markdown(f"""
-<div class="cora-card">
-    <div class="card-title">{selected_recipe}</div>
-    <div class="card-text">
-        {description_html}
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-
-# =========================================================
-# INFO
-# =========================================================
-show_info_card(recipe)
+if st.session_state.view == "🍲 Kochen":
+    st.markdown('<div class="section-title">🍳 Kochen — Asia & Familien-Basics</div>', unsafe_allow_html=True)
+    recipe_names = list(recipes.keys())
+    selected_recipe = st.radio(
+        "Gericht auswählen",
+        recipe_names,
+        index=recipe_names.index(st.session_state.selected_recipe),
+        label_visibility="collapsed"
+    )
+    st.session_state.selected_recipe = selected_recipe
+    render_recipe(selected_recipe)
+    home_button("cook")
 
 
 # =========================================================
-# INGREDIENTS
+# BAKING VIEW
 # =========================================================
-show_simple_list("Zutaten", recipe["ingredients"], icon="🧾")
-
-
-# =========================================================
-# SHOPPING LIST
-# =========================================================
-st.markdown('<div class="section-title">🛒 Einkaufsliste nach Marktstruktur</div>', unsafe_allow_html=True)
-
-for category, items in recipe["shopping"].items():
-    st.markdown(f'<div class="shopping-category-title">{category}</div>', unsafe_allow_html=True)
-
-    for item in items:
-        checkbox_key = f"{st.session_state.reset_counter}_{selected_recipe}_{category}_{item}"
-        st.checkbox(item, key=checkbox_key)
-
-
-# =========================================================
-# RESET BUTTON
-# =========================================================
-st.markdown("<br>", unsafe_allow_html=True)
-
-if st.button("✅ Einkaufsliste zurücksetzen"):
-    st.session_state.reset_counter += 1
-    st.rerun()
-
-
-# =========================================================
-# COOKING STEPS
-# =========================================================
-st.markdown('<div class="section-title">👨‍🍳 Kochschritte</div>', unsafe_allow_html=True)
-
-for i, step in enumerate(recipe["steps"], start=1):
-    st.markdown(f"""
-    <div class="list-item">
-        <b>{i}.</b> {step}
-    </div>
-    """, unsafe_allow_html=True)
-
-
-
-# =========================================================
-# BACKING SECTION
-# =========================================================
-if st.session_state.kitchen_mode == "🍰 Backen":
-    st.markdown('<div class="section-title">🍰 Cora Backstube — einfach aus Vorrat</div>', unsafe_allow_html=True)
-
+if st.session_state.view == "🍰 Backen":
+    st.markdown('<div class="section-title">🍰 Cora Backstube — Top 10 einfach aus Vorrat</div>', unsafe_allow_html=True)
     baking_names = list(baking_recipes.keys())
     selected_baking = st.radio(
         "Backidee auswählen",
         baking_names,
+        index=baking_names.index(st.session_state.selected_baking),
         label_visibility="collapsed"
     )
-
-    bake = baking_recipes[selected_baking]
-    bake_description_html = bake["description"].replace("\n", "<br>")
-
-    st.markdown(f"""
-    <div class="cora-card">
-        <div class="card-title">{selected_baking}</div>
-        <div class="card-text">
-            {bake_description_html}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    show_info_card(bake)
-    show_simple_list("Back-Zutaten", bake["ingredients"], icon="🧾")
-
-    st.markdown('<div class="section-title">🛒 Fehlt etwas?</div>', unsafe_allow_html=True)
-    for item in bake["missing_check"]:
-        st.checkbox(item, key=f"bake_missing_{selected_baking}_{item}")
-
-    st.markdown('<div class="section-title">👩‍🍳 Backschritte</div>', unsafe_allow_html=True)
-    for i, step in enumerate(bake["steps"], start=1):
-        st.markdown(f"""
-        <div class="list-item">
-            <b>{i}.</b> {step}
-        </div>
-        """, unsafe_allow_html=True)
+    st.session_state.selected_baking = selected_baking
+    render_baking(selected_baking)
+    home_button("bake")
 
 
 # =========================================================
-# QUICK SHOPPING VALUE SECTION
+# SHOPPING VIEW
 # =========================================================
-if st.session_state.kitchen_mode == "🛒 Einkauf":
-    st.markdown('<div class="section-title">🛒 Einkauf — was fehlt wirklich?</div>', unsafe_allow_html=True)
+if st.session_state.view == "🛒 Einkauf":
+    st.markdown('<div class="section-title">🛒 Einkauf — entspannt abhaken</div>', unsafe_allow_html=True)
+    recipe_names = list(recipes.keys())
+    selected_recipe = st.radio(
+        "Liste für Gericht auswählen",
+        recipe_names,
+        index=recipe_names.index(st.session_state.selected_recipe),
+        label_visibility="collapsed"
+    )
+    st.session_state.selected_recipe = selected_recipe
+    recipe = recipes[selected_recipe]
+    render_shopping_mode("Gericht", selected_recipe, recipe["shopping"], prefix="shopview")
 
     st.markdown("""
     <div class="cora-card">
@@ -1244,10 +1696,35 @@ if st.session_state.kitchen_mode == "🛒 Einkauf":
         </div>
     </div>
     """, unsafe_allow_html=True)
+    home_button("shop")
 
-    st.markdown('<div class="shopping-category-title">Fehlt oft für Kochen / Backen</div>', unsafe_allow_html=True)
-    for item in ["Sojasauce", "Backpulver", "Butter", "Eier", "Milch", "TK Gemüse", "Putenfleisch"]:
-        st.checkbox(item, key=f"quick_shop_{item}")
+
+# =========================================================
+# HISTORY VIEW
+# =========================================================
+if st.session_state.view == "🕘 Verlauf":
+    render_history()
+
+
+# =========================================================
+# HELP VIEW
+# =========================================================
+if st.session_state.view == "🎙️ Cora Hilfe":
+    st.markdown('<div class="section-title">🎙️ Wann Cora fragen?</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="cora-card">
+        <div class="card-title">Im Geschäft hakst du nur ab.</div>
+        <div class="card-text">
+            Wenn du festhängst, fragst du Cora.<br><br>
+            ✅ Ersatz finden: „Brokkoli ist ausverkauft.“<br>
+            ✅ Aktion prüfen: „Lohnt sich Butter auf Vorrat?“<br>
+            ✅ Budget retten: „Was kann ich streichen?“<br>
+            ✅ Nach dem Einkauf: „Was koche ich zuerst?“<br><br>
+            Nicht reden müssen. Nur Hilfe, wenn du sie brauchst.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    home_button("help")
 
 
 # =========================================================
@@ -1259,9 +1736,10 @@ st.markdown("""
     <div class="card-text">
         Du brauchst keine 100 Rezepte.<br>
         Du brauchst eine klare Richtung.<br><br>
-        Ein Gericht. Eine Liste. Eine Route.<br>
-        Schnell rein. Schnell raus.<br><br>
-        Mehr Zeit zum Leben.
+        Was ist da? Cora prüft.<br>
+        Cora zaubert Ideen.<br>
+        Was fehlt, kommt auf die Einkaufsliste.<br>
+        Verlauf merkt, was funktioniert hat.
     </div>
 </div>
 """, unsafe_allow_html=True)
