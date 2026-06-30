@@ -1149,7 +1149,7 @@ def go(page):
 # CORA IMAGE
 # =========================================================
 if CORA_IMAGE is not None and CORA_IMAGE.exists():
-    st.image(str(CORA_IMAGE), use_column_width=True)
+    st.image(str(CORA_IMAGE), width="stretch")
 else:
     st.error("Cora Bild nicht gefunden.")
     st.info(f"App-Ordner: {APP_DIR}")
@@ -1305,7 +1305,7 @@ elif st.session_state.page == "📸 Upload":
         cols = st.columns(3)
         for idx, photo in enumerate(uploaded_photos[:3]):
             with cols[idx % 3]:
-                st.image(photo, use_column_width=True)
+                st.image(photo, width="stretch")
 
         if st.button("✨ Cora prüfen und sortieren", use_container_width=True):
             st.session_state["photos_checked"] = True
