@@ -343,7 +343,7 @@ p, div, span, label {
         font-size: 0.98rem !important;
     }
 
-    /* Am Handy: Desktop-Buttonleiste verstecken, Roll-Cora-Dings-Bummsen bleibt */
+    /* Am Handy: Desktop-Buttonleiste verstecken, Menü bleibt */
     .desktop-nav {
         display: none !important;
     }
@@ -406,6 +406,77 @@ div[data-testid="column"] {
     height: 1px;
     background: rgba(255, 160, 55, 0.22);
     margin: 18px 0 22px 0;
+}
+
+
+/* Serious Mobile Menü / Upload Fix */
+.stSelectbox label {
+    color: #ffb14a !important;
+    font-size: 1.05rem !important;
+    font-weight: 950 !important;
+}
+
+.stSelectbox div[data-baseweb="select"] > div {
+    background: rgba(0, 0, 0, 0.88) !important;
+    border: 1px solid rgba(255, 160, 55, 0.58) !important;
+    border-radius: 15px !important;
+    min-height: 52px !important;
+    box-shadow: 0 0 18px rgba(255, 110, 20, 0.14);
+}
+
+.stSelectbox div[data-baseweb="select"] span,
+.stSelectbox div[data-baseweb="select"] div {
+    color: #fff3e4 !important;
+    font-weight: 850 !important;
+}
+
+div[data-baseweb="popover"],
+div[data-baseweb="menu"] {
+    z-index: 999999 !important;
+}
+
+div[role="listbox"] {
+    background: #090302 !important;
+    border: 1px solid rgba(255, 160, 55, 0.58) !important;
+}
+
+div[role="option"] {
+    color: #fff3e4 !important;
+    background: #090302 !important;
+    font-weight: 800 !important;
+}
+
+div[role="option"]:hover {
+    background: rgba(255, 120, 20, 0.22) !important;
+}
+
+[data-testid="stFileUploader"] {
+    position: relative !important;
+    z-index: 20 !important;
+    pointer-events: auto !important;
+    background: rgba(0, 0, 0, 0.72) !important;
+    border: 1px dashed rgba(255, 160, 55, 0.60) !important;
+    border-radius: 18px !important;
+    padding: 14px !important;
+}
+
+[data-testid="stFileUploader"] * {
+    pointer-events: auto !important;
+}
+
+[data-testid="stFileUploader"] button {
+    position: relative !important;
+    z-index: 30 !important;
+}
+
+@media (max-width: 600px) {
+    .desktop-nav {
+        display: none !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] > div {
+        min-height: 56px !important;
+    }
 }
 
 </style>
@@ -1114,11 +1185,10 @@ for col, page_name in zip(nav_cols, pages):
 st.markdown('</div>', unsafe_allow_html=True)
 
 selected_page = st.selectbox(
-    "📱 Roll-Cora-Dings-Bummsen",
+    "Menü",
     pages,
     index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
-    label_visibility="visible",
-    key="mobile_nav_select"
+    label_visibility="visible"
 )
 
 if selected_page != st.session_state.page:
@@ -1218,7 +1288,7 @@ elif st.session_state.page == "📸 Upload":
     """, unsafe_allow_html=True)
 
     uploaded_photos = st.file_uploader(
-        "📸 Bilder auswählen oder hier reinziehen",
+        "📸 Bilder hochladen",
         type=["png", "jpg", "jpeg", "webp"],
         accept_multiple_files=True,
         key="photo_upload",
