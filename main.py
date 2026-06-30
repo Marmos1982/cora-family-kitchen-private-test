@@ -750,6 +750,25 @@ div[role="option"]:hover {
     }
 }
 
+
+/* V9 button chooser: recipes must show, no dropdown/radio bug */
+.section-title {
+    clear: both !important;
+}
+
+.stButton > button {
+    white-space: normal !important;
+    text-align: center !important;
+}
+
+@media (max-width: 600px) {
+    .stButton > button {
+        min-height: 54px !important;
+        font-size: 0.90rem !important;
+        line-height: 1.2 !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -826,6 +845,32 @@ def estimate_budget(period, cooking_count, baking_count):
     high += baking_count * 7
     return low, high
 
+
+def choose_from_buttons(title, names, state_key, prefix):
+    st.markdown(f'<div class="section-title">{title}</div>', unsafe_allow_html=True)
+
+    if state_key not in st.session_state or st.session_state[state_key] not in names:
+        st.session_state[state_key] = names[0]
+
+    for start in range(0, len(names), 2):
+        cols = st.columns(2)
+        for idx, name in enumerate(names[start:start + 2]):
+            with cols[idx]:
+                number = names.index(name) + 1
+                active = " ✅" if st.session_state[state_key] == name else ""
+                if st.button(f"{number}. {name.split('. ', 1)[-1]}{active}", key=f"{prefix}_{number}", use_container_width=True):
+                    st.session_state[state_key] = name
+                    st.rerun()
+
+    return st.session_state[state_key]
+
+
+def quick_selected_line(label, selected):
+    st.markdown(
+        f'<div class="list-item"><b>{label}:</b> {selected}</div>',
+        unsafe_allow_html=True
+    )
+
 CORA_IMAGE = find_cora_image()
 if CORA_IMAGE:
     st.image(str(CORA_IMAGE), width="stretch")
@@ -894,25 +939,15 @@ if page == "🏠 Start":
 elif page == "🍳 Rezept":
     mode = st.radio("Bereich wählen", ["🍲 Kochen", "🍰 Backen"], horizontal=True)
     if mode == "🍲 Kochen":
-        selected = st.radio(
-            "Gericht auswählen",
-            recipe_names,
-            index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
-            key="recipe_radio_main"
-        )
-        st.session_state.selected_recipe = selected
+        selected = choose_from_buttons("Gericht auswählen", recipe_names, "selected_recipe", "recipe_main")
+        quick_selected_line("Ausgewählt", selected)
         recipe = recipes[selected]
         show_card(selected, recipe["description"])
         show_info(recipe)
         show_list("Zutaten", recipe["ingredients"])
     else:
-        selected = st.radio(
-            "Backidee auswählen",
-            baking_names,
-            index=baking_names.index(st.session_state.selected_baking) if st.session_state.selected_baking in baking_names else 0,
-            key="baking_radio_main"
-        )
-        st.session_state.selected_baking = selected
+        selected = choose_from_buttons("Backidee auswählen", baking_names, "selected_baking", "baking_main")
+        quick_selected_line("Ausgewählt", selected)
         bake = baking_recipes[selected]
         show_card(selected, bake["description"])
         show_info(bake)
@@ -946,13 +981,8 @@ elif page == "📅 Plan-Einkauf":
             show_card("📦 Hinweis", "Vorrat hält länger. Frische Ware bewusst prüfen, damit nichts schlecht wird.")
 
 elif page == "🛒 Einkauf":
-    selected = st.radio(
-        "Gericht für Einkaufsliste auswählen",
-        recipe_names,
-        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
-        key="recipe_radio_shopping"
-    )
-    st.session_state.selected_recipe = selected
+    selected = choose_from_buttons("Gericht für Einkaufsliste auswählen", recipe_names, "selected_recipe", "recipe_shop")
+    quick_selected_line("Ausgewählt", selected)
     recipe = recipes[selected]
     st.markdown('<div class="section-title">🛒 Einkaufsliste</div>', unsafe_allow_html=True)
     for cat, items in recipe["shopping"].items():
@@ -964,13 +994,8 @@ elif page == "🛒 Einkauf":
         st.rerun()
 
 elif page == "👨‍🍳 Kochen":
-    selected = st.radio(
-        "Gericht auswählen",
-        recipe_names,
-        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
-        key="recipe_radio_cooking"
-    )
-    st.session_state.selected_recipe = selected
+    selected = choose_from_buttons("Gericht auswählen", recipe_names, "selected_recipe", "recipe_cooking")
+    quick_selected_line("Ausgewählt", selected)
     recipe = recipes[selected]
     show_card(selected, recipe["description"])
     st.markdown('<div class="section-title">👨‍🍳 Kochschritte</div>', unsafe_allow_html=True)
