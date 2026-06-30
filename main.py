@@ -621,6 +621,56 @@ p, div, span, label {
         grid-template-columns: 1fr;
     }
 }
+
+/* V7 visible stable nav */
+.nav-title {
+    margin-top: 18px !important;
+    margin-bottom: 8px !important;
+}
+
+.stButton > button {
+    min-height: 54px !important;
+    font-size: 1.02rem !important;
+    font-weight: 950 !important;
+    border-radius: 16px !important;
+    background: linear-gradient(135deg, #ff9f2f, #ff4d1a) !important;
+    color: #100400 !important;
+    border: 1px solid rgba(255, 190, 90, 0.85) !important;
+    box-shadow: 0 0 18px rgba(255, 110, 20, 0.22) !important;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #ffbd5b, #ff6b2a) !important;
+    color: #000000 !important;
+    border: 1px solid rgba(255, 220, 150, 1) !important;
+}
+
+.stButton > button:focus {
+    outline: 3px solid rgba(255, 190, 80, 0.65) !important;
+    color: #000000 !important;
+}
+
+[data-testid="column"] {
+    padding: 0.15rem 0.15rem !important;
+}
+
+@media (max-width: 600px) {
+    .stButton > button {
+        min-height: 58px !important;
+        font-size: 0.95rem !important;
+        padding: 0.7rem 0.35rem !important;
+        white-space: normal !important;
+    }
+
+    .cora-title {
+        font-size: 1.45rem !important;
+    }
+
+    .card-text {
+        font-size: 0.94rem !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -712,7 +762,35 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 pages = ["🏠 Start", "🍳 Rezept", "📅 Plan-Einkauf", "🛒 Einkauf", "👨‍🍳 Kochen", "📸 Upload"]
-page = st.selectbox("Menü", pages, index=0, key="page_menu")
+
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Start"
+
+def set_page(new_page):
+    st.session_state.page = new_page
+
+st.markdown('<div class="section-title nav-title">Menü</div>', unsafe_allow_html=True)
+
+nav_rows = [
+    ["🏠 Start", "🍳 Rezept"],
+    ["📅 Plan-Einkauf", "🛒 Einkauf"],
+    ["👨‍🍳 Kochen", "📸 Upload"],
+]
+
+for row in nav_rows:
+    cols = st.columns(2)
+    for col, nav_page in zip(cols, row):
+        with col:
+            active = " ✅" if st.session_state.page == nav_page else ""
+            st.button(
+                f"{nav_page}{active}",
+                key=f"nav_btn_{nav_page}",
+                use_container_width=True,
+                on_click=set_page,
+                args=(nav_page,)
+            )
+
+page = st.session_state.page
 
 if "selected_recipe" not in st.session_state:
     st.session_state.selected_recipe = list(recipes.keys())[0]
@@ -836,3 +914,4 @@ elif page == "📸 Upload":
     if st.session_state.get("photos_checked"):
         show_card("📦 Cora Demo-Sortierung", "Basis: Reis, Nudeln, Kartoffeln<br>Gemüse/TK: TK Gemüse, Karotten, Zwiebel<br>Eiweiß: Eier, Putenfleisch<br>Backen: Mehl, Zucker, Milch, Kakao")
         show_card("💡 Cora Ideen", "Asia-Reis mit Gemüse und Ei<br>Nudelpfanne mit Karotten und Zwiebel<br>Kartoffelpfanne<br>Schneller Kakao-Blechkuchen")
+
