@@ -31,16 +31,16 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                    'description': 'Schnell, günstig und perfekt für normale Familientage.\n'
                                                   'Kraut, Karotten, Nudeln und eine einfache Asia-Sauce.\n'
                                                   'Kein Stress. Keine 100 Zutaten. Pfanne heiß, Kopf ruhig.',
-                                   'ingredients': ['Nudeln oder Reisnudeln',
-                                                   'Weißkraut oder Chinakohl',
-                                                   'Karotten',
-                                                   'Zwiebel',
-                                                   'Knoblauch',
-                                                   'Sojasauce',
-                                                   'Honig oder Zucker',
-                                                   'Öl',
-                                                   'Optional: Huhn, Faschiertes oder Ei',
-                                                   'Optional: Sweet-Chili-Sauce'],
+                                   'ingredients': ['300 g Nudeln oder Reisnudeln',
+                                                   '1/2 Weißkraut oder 1 kleiner Chinakohl',
+                                                   '3 Karotten',
+                                                   '1 Zwiebel',
+                                                   '1 Knoblauchzehe',
+                                                   '3 EL Sojasauce',
+                                                   '1 TL Honig oder Zucker',
+                                                   '2 EL Öl',
+                                                   'Optional: 300 g Huhn, Faschiertes oder 3 Eier',
+                                                   'Optional: 2 EL Sweet-Chili-Sauce'],
                                    'shopping': {'🛒 Obst & Gemüse': ['Weißkraut oder Chinakohl',
                                                                     'Karotten',
                                                                     'Zwiebel',
@@ -65,15 +65,15 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                         'family': 'Sehr familientauglich'},
                                'description': 'Mildes Asia-Huhn mit Brokkoli und Reis.\n'
                                               'Einfach, warm, sättigend und besser als hektisch irgendwas bestellen.',
-                               'ingredients': ['Huhn',
-                                               'Brokkoli frisch oder TK',
-                                               'Karotten',
-                                               'Reis',
-                                               'Knoblauch',
-                                               'Sojasauce',
-                                               'Honig oder Zucker',
-                                               'Speisestärke',
-                                               'Öl'],
+                               'ingredients': ['400 g Huhn',
+                                               '1 Brokkoli oder 300 g TK-Brokkoli',
+                                               '2 Karotten',
+                                               '300 g Reis',
+                                               '1 Knoblauchzehe',
+                                               '3 EL Sojasauce',
+                                               '1 TL Honig oder Zucker',
+                                               '1 TL Speisestärke',
+                                               '2 EL Öl'],
                                'shopping': {'🛒 Obst & Gemüse': ['Brokkoli frisch oder TK', 'Karotten', 'Knoblauch'],
                                             '🥩 Kühlung / Fleisch / Ei': ['Huhn'],
                                             '🍚 Trockenware': ['Reis'],
@@ -94,16 +94,16 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                     'description': 'Perfekt für Reisreste.\n'
                                                    'Ei, Reis, Gemüse, Sojasauce — fertig.\n'
                                                    'Wenig Aufwand, viel Nutzen.',
-                                    'ingredients': ['Reis oder Reisreste',
-                                                    'Eier',
-                                                    'Karotten',
-                                                    'TK-Gemüse oder Erbsen',
-                                                    'Zwiebel',
-                                                    'Knoblauch',
-                                                    'Sojasauce',
-                                                    'Öl',
-                                                    'Optional: Curry',
-                                                    'Optional: Sweet-Chili-Sauce'],
+                                    'ingredients': ['300 g Reis oder ca. 600 g Reisreste',
+                                                    '3 Eier',
+                                                    '2 Karotten',
+                                                    '200 g TK-Gemüse oder Erbsen',
+                                                    '1 Zwiebel',
+                                                    '1 Knoblauchzehe',
+                                                    '3 EL Sojasauce',
+                                                    '2 EL Öl',
+                                                    'Optional: 1 TL Curry',
+                                                    'Optional: 2 EL Sweet-Chili-Sauce'],
                                     'shopping': {'🛒 Obst & Gemüse': ['Karotten',
                                                                      'TK-Gemüse oder Erbsen',
                                                                      'Zwiebel',
@@ -127,16 +127,16 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                       'family': 'Mild möglich'},
                              'description': 'Warmes Kokos-Curry für stressige Tage.\n'
                                             'Reis, Gemüse, Kokosmilch und optional Huhn oder Tofu.',
-                             'ingredients': ['Reis',
-                                             'Kokosmilch',
-                                             'Currypaste oder Currypulver',
-                                             'Karotten',
-                                             'Brokkoli oder TK-Gemüse',
-                                             'Zwiebel',
-                                             'Knoblauch',
-                                             'Optional: Huhn oder Tofu',
-                                             'Öl',
-                                             'Sojasauce'],
+                             'ingredients': ['300 g Reis',
+                                             '1 Dose Kokosmilch (400 ml)',
+                                             '1–2 EL Currypaste oder 1–2 TL Currypulver',
+                                             '2 Karotten',
+                                             '300 g Brokkoli oder TK-Gemüse',
+                                             '1 Zwiebel',
+                                             '1 Knoblauchzehe',
+                                             'Optional: 400 g Huhn oder Tofu',
+                                             '2 EL Öl',
+                                             '2 EL Sojasauce'],
                              'shopping': {'🛒 Obst & Gemüse': ['Karotten',
                                                               'Brokkoli oder TK-Gemüse',
                                                               'Zwiebel',
@@ -160,15 +160,15 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                       'family': 'Süßlich / kinderfreundlich'},
                              'description': 'Schnelle Nudelpfanne mit süß-salziger Teriyaki-Richtung.\n'
                                             'Gut für Tage, wo der Kopf keine Diskussion mehr will.',
-                             'ingredients': ['Mie-Nudeln oder Spaghetti',
-                                             'Karotten',
-                                             'Paprika oder TK-Gemüse',
-                                             'Zwiebel',
-                                             'Knoblauch',
-                                             'Sojasauce',
-                                             'Honig oder Zucker',
-                                             'Optional: Huhn',
-                                             'Öl'],
+                             'ingredients': ['300 g Mie-Nudeln oder Spaghetti',
+                                             '2 Karotten',
+                                             '1 Paprika oder 250 g TK-Gemüse',
+                                             '1 Zwiebel',
+                                             '1 Knoblauchzehe',
+                                             '4 EL Sojasauce',
+                                             '1 EL Honig oder Zucker',
+                                             'Optional: 400 g Huhn',
+                                             '2 EL Öl'],
                              'shopping': {'🛒 Obst & Gemüse': ['Karotten',
                                                               'Paprika oder TK-Gemüse',
                                                               'Zwiebel',
@@ -189,14 +189,14 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                             'description': 'Einer der besten Familienretter.\n'
                                            'Reis, Ei, Gemüse, Sojasauce.\n'
                                            'Schnell, günstig, warm.',
-                            'ingredients': ['Reis',
-                                            'Eier',
-                                            'Karotten',
-                                            'Erbsen oder TK-Gemüse',
-                                            'Zwiebel',
-                                            'Knoblauch',
-                                            'Sojasauce',
-                                            'Öl'],
+                            'ingredients': ['300 g Reis oder ca. 600 g Reisreste',
+                                            '3 Eier',
+                                            '2 Karotten',
+                                            '200 g Erbsen oder TK-Gemüse',
+                                            '1 Zwiebel',
+                                            '1 Knoblauchzehe',
+                                            '3 EL Sojasauce',
+                                            '2 EL Öl'],
                             'shopping': {'🛒 Obst & Gemüse': ['Karotten',
                                                              'Erbsen oder TK-Gemüse',
                                                              'Zwiebel',
@@ -217,14 +217,14 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                        'description': 'Cremige Erdnuss-Nudeln.\n'
                                       'Wenig Zutaten, viel Geschmack.\n'
                                       'Perfekt, wenn wenig Energie da ist.',
-                       'ingredients': ['Nudeln',
-                                       'Erdnussbutter',
-                                       'Sojasauce',
-                                       'Knoblauch',
-                                       'Karotten',
-                                       'Optional: Gurke',
-                                       'Optional: Sweet-Chili-Sauce',
-                                       'Wasser zum Verdünnen'],
+                       'ingredients': ['300 g Nudeln',
+                                       '3 EL Erdnussbutter',
+                                       '3 EL Sojasauce',
+                                       '1 Knoblauchzehe',
+                                       '2 Karotten',
+                                       'Optional: 1/2 Gurke',
+                                       'Optional: 2 EL Sweet-Chili-Sauce',
+                                       '50–100 ml warmes Wasser zum Verdünnen'],
                        'shopping': {'🛒 Obst & Gemüse': ['Karotten', 'Knoblauch', 'Optional: Gurke'],
                                     '🥩 Kühlung / Fleisch / Ei': ['Optional: Huhn oder Tofu'],
                                     '🍚 Trockenware': ['Nudeln'],
@@ -243,14 +243,14 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                            'family': 'Süß / mild scharf möglich'},
                                   'description': 'Sweet-Chili-Huhn ist schnell, einfach und sehr familientauglich.\n'
                                                  'Reis dazu und fertig ist ein starkes Abendessen.',
-                                  'ingredients': ['Huhn',
-                                                  'Reis',
-                                                  'Karotten',
-                                                  'Paprika oder TK-Gemüse',
-                                                  'Knoblauch',
-                                                  'Sweet-Chili-Sauce',
-                                                  'Sojasauce',
-                                                  'Öl'],
+                                  'ingredients': ['400 g Huhn',
+                                                  '300 g Reis',
+                                                  '2 Karotten',
+                                                  '1 Paprika oder 250 g TK-Gemüse',
+                                                  '1 Knoblauchzehe',
+                                                  '4 EL Sweet-Chili-Sauce',
+                                                  '2 EL Sojasauce',
+                                                  '2 EL Öl'],
                                   'shopping': {'🛒 Obst & Gemüse': ['Karotten', 'Paprika oder TK-Gemüse', 'Knoblauch'],
                                                '🥩 Kühlung / Fleisch / Ei': ['Huhn'],
                                                '🍚 Trockenware': ['Reis'],
@@ -268,14 +268,14 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                               'description': 'Schnelle Ramen-Bowl für kalte oder müde Tage.\n'
                                              'Ei, Gemüse, Nudeln, Brühe.\n'
                                              'Kein Luxus, aber echte Entlastung.',
-                              'ingredients': ['Ramen- oder Mie-Nudeln',
-                                              'Eier',
-                                              'Karotten',
-                                              'Frühlingszwiebel oder normale Zwiebel',
-                                              'Knoblauch',
-                                              'Brühe',
-                                              'Sojasauce',
-                                              'Optional: TK-Gemüse'],
+                              'ingredients': ['300 g Ramen- oder Mie-Nudeln',
+                                              '4 Eier',
+                                              '2 Karotten',
+                                              '1 Frühlingszwiebel oder 1 normale Zwiebel',
+                                              '1 Knoblauchzehe',
+                                              '1 Liter Brühe',
+                                              '2–3 EL Sojasauce',
+                                              'Optional: 200 g TK-Gemüse'],
                               'shopping': {'🛒 Obst & Gemüse': ['Karotten',
                                                                'Frühlingszwiebel oder normale Zwiebel',
                                                                'Knoblauch',
@@ -296,14 +296,14 @@ recipes = {'1. Kraut-Karotten-Nudelpfanne': {'info': {'time': '20–25 Min',
                                'description': 'Kraut, Ei und Asia-Sauce.\n'
                                               'Einfach, günstig und überraschend gut.\n'
                                               'Cora sagt: kein Sidequest, nur Pfanne.',
-                               'ingredients': ['Weißkraut oder Spitzkohl',
-                                               'Eier',
-                                               'Karotten',
-                                               'Zwiebel',
-                                               'Knoblauch',
-                                               'Sojasauce',
-                                               'Öl',
-                                               'Optional: Reis oder Nudeln'],
+                               'ingredients': ['1/2 Weißkraut oder 1 kleiner Spitzkohl',
+                                               '3 Eier',
+                                               '2 Karotten',
+                                               '1 Zwiebel',
+                                               '1 Knoblauchzehe',
+                                               '3 EL Sojasauce',
+                                               '2 EL Öl',
+                                               'Optional: 300 g Reis oder Nudeln'],
                                'shopping': {'🛒 Obst & Gemüse': ['Weißkraut oder Spitzkohl',
                                                                 'Karotten',
                                                                 'Zwiebel',
@@ -752,6 +752,13 @@ div[role="option"]:hover {
 
 
 /* V9 button chooser: recipes must show, no dropdown/radio bug */
+.stButton > button p, .stButton > button div, .stButton > button span {
+    color: #100400 !important;
+    font-weight: 950 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+}
+
 .section-title {
     clear: both !important;
 }
@@ -863,45 +870,6 @@ div[role="option"][aria-selected="true"] {
     }
 }
 
-
-
-/* V11 STABLE FIX: recipe names + buttons readable */
-.stButton > button,
-.stButton > button * {
-    color: #100400 !important;
-    font-weight: 950 !important;
-    opacity: 1 !important;
-    text-shadow: none !important;
-}
-
-.stButton > button p,
-.stButton > button span,
-.stButton > button div {
-    color: #100400 !important;
-    font-weight: 950 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    line-height: 1.25 !important;
-}
-
-.stButton > button {
-    min-height: 60px !important;
-    height: auto !important;
-    padding: 0.85rem 0.75rem !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-align: center !important;
-}
-
-@media (max-width: 600px) {
-    .stButton > button {
-        min-height: 64px !important;
-        font-size: 0.94rem !important;
-        line-height: 1.25 !important;
-    }
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -985,26 +953,30 @@ def choose_from_buttons(title, names, state_key, prefix):
     if state_key not in st.session_state or st.session_state[state_key] not in names:
         st.session_state[state_key] = names[0]
 
-    # STABLE FIX: one button per row.
-    # No two-column squeeze, no cut-off recipe names, no hidden button text.
     for number, name in enumerate(names, start=1):
-        clean_name = name.split('. ', 1)[-1]
         active = " ✅" if st.session_state[state_key] == name else ""
-        if st.button(
-            f"{number}. {clean_name}{active}",
-            key=f"{prefix}_{number}",
-            use_container_width=True
-        ):
+        button_label = f"{number}. {name.split('. ', 1)[-1]}{active}"
+        if st.button(button_label, key=f"{prefix}_{number}", use_container_width=True):
             st.session_state[state_key] = name
             st.rerun()
 
     return st.session_state[state_key]
+
 
 def quick_selected_line(label, selected):
     st.markdown(
         f'<div class="list-item"><b>{label}:</b> {selected}</div>',
         unsafe_allow_html=True
     )
+
+
+def show_full_recipe(recipe, ingredient_title="Zutaten"):
+    show_card("Portionen", "Für ca. 4 Portionen / Familie")
+    show_card(recipe.get("title", "Rezept"), recipe.get("description", ""))
+    show_info(recipe)
+    show_list(ingredient_title, recipe.get("ingredients", []), "🧾")
+    show_list("Zubereitung", recipe.get("steps", []), "👨‍🍳")
+
 
 CORA_IMAGE = find_cora_image()
 if CORA_IMAGE:
@@ -1077,18 +1049,12 @@ elif page == "🍳 Rezept":
         selected = choose_from_buttons("Gericht auswählen", recipe_names, "selected_recipe", "recipe_main")
         quick_selected_line("Ausgewählt", selected)
         recipe = recipes[selected]
-        show_card(selected, recipe["description"])
-        show_info(recipe)
-        show_list("Zutaten", recipe["ingredients"])
-        show_list("Zubereitung", recipe["steps"], "👨‍🍳")
+        show_full_recipe(recipe, "Zutaten mit Mengen")
     else:
         selected = choose_from_buttons("Backidee auswählen", baking_names, "selected_baking", "baking_main")
         quick_selected_line("Ausgewählt", selected)
         bake = baking_recipes[selected]
-        show_card(selected, bake["description"])
-        show_info(bake)
-        show_list("Back-Zutaten", bake["ingredients"])
-        show_list("Zubereitung", bake["steps"], "👨‍🍳")
+        show_full_recipe(bake, "Back-Zutaten mit Mengen")
 
 elif page == "📅 Plan-Einkauf":
     show_card("📅 Plan-Einkauf", "Plane 1 Woche, 2 Wochen oder 1 Monat. Wähle Kochen und Backen aus. Cora macht daraus eine gemeinsame Einkaufsliste.")
