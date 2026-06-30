@@ -608,6 +608,22 @@ div[role="option"]:hover {
     }
 }
 
+
+/* Navigation State Fix v4 */
+.mobile-nav {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    .mobile-nav {
+        display: block !important;
+    }
+
+    .desktop-nav {
+        display: none !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1269,10 +1285,15 @@ if "kitchen_mode" not in st.session_state:
 if "page" not in st.session_state:
     st.session_state.page = "🏠 Start"
 
+if "nav_menu" not in st.session_state:
+    st.session_state.nav_menu = st.session_state.page
+
 def go(page):
     st.session_state.page = page
+    st.session_state.nav_menu = page
 
-
+def menu_changed():
+    st.session_state.page = st.session_state.nav_menu
 
 # =========================================================
 # CORA IMAGE
@@ -1313,19 +1334,21 @@ for col, page_name in zip(nav_cols, pages):
         st.button(page_name, key=f"nav_{page_name}", use_container_width=True, on_click=go, args=(page_name,))
 st.markdown('</div>', unsafe_allow_html=True)
 
+# Menü immer mit aktueller Seite synchron halten.
+# Wichtig: Buttons setzen page UND nav_menu. Das Menü darf Buttons nicht zurück überschreiben.
+if st.session_state.nav_menu != st.session_state.page:
+    st.session_state.nav_menu = st.session_state.page
+
 st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
-selected_page = st.selectbox(
+st.selectbox(
     "Menü",
     pages,
-    index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
+    index=pages.index(st.session_state.nav_menu) if st.session_state.nav_menu in pages else 0,
     label_visibility="visible",
-    key="mobile_menu"
+    key="nav_menu",
+    on_change=menu_changed
 )
 st.markdown('</div>', unsafe_allow_html=True)
-
-if selected_page != st.session_state.page:
-    st.session_state.page = selected_page
-    st.rerun()
 
 st.markdown(
     f'<div class="list-item">📍 Aktuell offen: <b>{st.session_state.page}</b></div>',
