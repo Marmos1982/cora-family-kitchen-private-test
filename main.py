@@ -769,6 +769,100 @@ div[role="option"]:hover {
     }
 }
 
+
+/* V10 Plan-Einkauf Lesbarkeit Fix */
+.stMultiSelect label {
+    color: #ffb14a !important;
+    font-size: 1.05rem !important;
+    font-weight: 950 !important;
+}
+
+/* Hauptfeld vom Multiselect */
+.stMultiSelect div[data-baseweb="select"] > div {
+    background: rgba(0, 0, 0, 0.92) !important;
+    border: 1px solid rgba(255, 160, 55, 0.65) !important;
+    border-radius: 15px !important;
+    min-height: 54px !important;
+    color: #fff3e4 !important;
+}
+
+/* Text im Feld */
+.stMultiSelect div[data-baseweb="select"] span,
+.stMultiSelect div[data-baseweb="select"] div,
+.stMultiSelect div[data-baseweb="select"] input {
+    color: #fff3e4 !important;
+    font-weight: 800 !important;
+}
+
+/* Placeholder */
+.stMultiSelect input::placeholder {
+    color: #ffe0b8 !important;
+    opacity: 1 !important;
+}
+
+/* Ausgewählte Chips */
+.stMultiSelect span[data-baseweb="tag"] {
+    background: linear-gradient(135deg, #ff9f2f, #ff4d1a) !important;
+    border: 1px solid rgba(255, 210, 140, 0.85) !important;
+    border-radius: 12px !important;
+}
+
+.stMultiSelect span[data-baseweb="tag"] span,
+.stMultiSelect span[data-baseweb="tag"] div,
+.stMultiSelect span[data-baseweb="tag"] svg {
+    color: #130500 !important;
+    fill: #130500 !important;
+    font-weight: 950 !important;
+}
+
+/* Offene Dropdown-Liste */
+div[data-baseweb="popover"] {
+    z-index: 999999 !important;
+}
+
+div[role="listbox"] {
+    background: #080302 !important;
+    border: 1px solid rgba(255, 160, 55, 0.70) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 24px rgba(255, 110, 20, 0.20) !important;
+}
+
+/* Optionen in der Dropdown-Liste */
+div[role="option"] {
+    background: #080302 !important;
+    color: #fff3e4 !important;
+    font-weight: 850 !important;
+    min-height: 42px !important;
+}
+
+div[role="option"] span,
+div[role="option"] div {
+    color: #fff3e4 !important;
+    font-weight: 850 !important;
+}
+
+div[role="option"]:hover,
+div[role="option"][aria-selected="true"] {
+    background: rgba(255, 120, 20, 0.28) !important;
+    color: #ffffff !important;
+}
+
+/* Kleine Helligkeits-Fallen in Plan-Einkauf */
+.stMultiSelect [data-testid="stMarkdownContainer"] p {
+    color: #fff3e4 !important;
+}
+
+@media (max-width: 600px) {
+    .stMultiSelect div[data-baseweb="select"] > div {
+        min-height: 58px !important;
+    }
+
+    div[role="option"] {
+        min-height: 46px !important;
+        font-size: 0.95rem !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
