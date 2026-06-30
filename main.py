@@ -671,6 +671,85 @@ p, div, span, label {
     }
 }
 
+
+/* V8 recipe selector fix: no white dropdowns */
+.stRadio {
+    background: rgba(0, 0, 0, 0.68) !important;
+    border: 1px solid rgba(255, 160, 55, 0.35) !important;
+    border-radius: 18px !important;
+    padding: 12px 14px !important;
+    margin-bottom: 16px !important;
+}
+
+.stRadio > label {
+    color: #ffb14a !important;
+    font-size: 1.02rem !important;
+    font-weight: 950 !important;
+}
+
+.stRadio div[role="radiogroup"] {
+    gap: 0.35rem !important;
+}
+
+.stRadio div[role="radiogroup"] label {
+    background: rgba(255, 255, 255, 0.055) !important;
+    border: 1px solid rgba(255, 160, 55, 0.18) !important;
+    border-radius: 13px !important;
+    padding: 8px 10px !important;
+    margin-bottom: 6px !important;
+}
+
+.stRadio div[role="radiogroup"] label:hover {
+    background: rgba(255, 120, 20, 0.14) !important;
+    border: 1px solid rgba(255, 160, 55, 0.36) !important;
+}
+
+.stRadio div[role="radiogroup"] label span,
+.stRadio div[role="radiogroup"] label div,
+.stRadio div[role="radiogroup"] label p {
+    color: #fff3e4 !important;
+    font-size: 0.98rem !important;
+    font-weight: 750 !important;
+}
+
+/* Keep multiselect readable in Plan-Einkauf */
+.stMultiSelect div[data-baseweb="select"] > div {
+    background: rgba(0, 0, 0, 0.88) !important;
+    border: 1px solid rgba(255, 160, 55, 0.52) !important;
+    border-radius: 15px !important;
+}
+
+div[role="listbox"] {
+    background: #090302 !important;
+    border: 1px solid rgba(255, 160, 55, 0.55) !important;
+}
+
+div[role="option"] {
+    color: #fff3e4 !important;
+    background: #090302 !important;
+    font-weight: 800 !important;
+}
+
+div[role="option"]:hover {
+    background: rgba(255, 120, 20, 0.22) !important;
+}
+
+@media (max-width: 600px) {
+    .stRadio {
+        padding: 10px 10px !important;
+    }
+
+    .stRadio div[role="radiogroup"] label {
+        padding: 9px 9px !important;
+    }
+
+    .stRadio div[role="radiogroup"] label span,
+    .stRadio div[role="radiogroup"] label div,
+    .stRadio div[role="radiogroup"] label p {
+        font-size: 0.92rem !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -815,10 +894,11 @@ if page == "🏠 Start":
 elif page == "🍳 Rezept":
     mode = st.radio("Bereich wählen", ["🍲 Kochen", "🍰 Backen"], horizontal=True)
     if mode == "🍲 Kochen":
-        selected = st.selectbox(
+        selected = st.radio(
             "Gericht auswählen",
             recipe_names,
-            index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0
+            index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
+            key="recipe_radio_main"
         )
         st.session_state.selected_recipe = selected
         recipe = recipes[selected]
@@ -826,10 +906,11 @@ elif page == "🍳 Rezept":
         show_info(recipe)
         show_list("Zutaten", recipe["ingredients"])
     else:
-        selected = st.selectbox(
+        selected = st.radio(
             "Backidee auswählen",
             baking_names,
-            index=baking_names.index(st.session_state.selected_baking) if st.session_state.selected_baking in baking_names else 0
+            index=baking_names.index(st.session_state.selected_baking) if st.session_state.selected_baking in baking_names else 0,
+            key="baking_radio_main"
         )
         st.session_state.selected_baking = selected
         bake = baking_recipes[selected]
@@ -865,10 +946,11 @@ elif page == "📅 Plan-Einkauf":
             show_card("📦 Hinweis", "Vorrat hält länger. Frische Ware bewusst prüfen, damit nichts schlecht wird.")
 
 elif page == "🛒 Einkauf":
-    selected = st.selectbox(
+    selected = st.radio(
         "Gericht für Einkaufsliste auswählen",
         recipe_names,
-        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0
+        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
+        key="recipe_radio_shopping"
     )
     st.session_state.selected_recipe = selected
     recipe = recipes[selected]
@@ -882,10 +964,11 @@ elif page == "🛒 Einkauf":
         st.rerun()
 
 elif page == "👨‍🍳 Kochen":
-    selected = st.selectbox(
+    selected = st.radio(
         "Gericht auswählen",
         recipe_names,
-        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0
+        index=recipe_names.index(st.session_state.selected_recipe) if st.session_state.selected_recipe in recipe_names else 0,
+        key="recipe_radio_cooking"
     )
     st.session_state.selected_recipe = selected
     recipe = recipes[selected]
@@ -914,4 +997,3 @@ elif page == "📸 Upload":
     if st.session_state.get("photos_checked"):
         show_card("📦 Cora Demo-Sortierung", "Basis: Reis, Nudeln, Kartoffeln<br>Gemüse/TK: TK Gemüse, Karotten, Zwiebel<br>Eiweiß: Eier, Putenfleisch<br>Backen: Mehl, Zucker, Milch, Kakao")
         show_card("💡 Cora Ideen", "Asia-Reis mit Gemüse und Ei<br>Nudelpfanne mit Karotten und Zwiebel<br>Kartoffelpfanne<br>Schneller Kakao-Blechkuchen")
-
