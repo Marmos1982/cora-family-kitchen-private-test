@@ -2,14 +2,15 @@ import streamlit as st
 from datetime import datetime
 
 # =========================================================
-# CORA FAMILY KITCHEN — BUTTON FIX VERSION
+# CORA FAMILY KITCHEN — DESIGN SAFE + MOBILE FALLBACK
 # =========================================================
-# Fix:
+# Für Tester:
+# - Design bleibt warm / Cora Kitchen
+# - Desktop Buttons bleiben
+# - Mobile/App bekommt zusätzlich stabile Auswahl
+# - Upload ist direkt erreichbar
+# - Keine hässliche Link-Navigation
 # - Kein st.rerun()
-# - Kein on_click
-# - Kein HTML-Wrapper um Buttons
-# - Buttons setzen nur session_state
-# - Upload direkt erreichbar
 # =========================================================
 
 st.set_page_config(
@@ -20,7 +21,7 @@ st.set_page_config(
 )
 
 # =========================================================
-# STYLE — SAFE CSS
+# STYLE — DESIGN BLEIBT
 # =========================================================
 
 st.markdown(
@@ -29,6 +30,11 @@ st.markdown(
     .stApp {
         background: linear-gradient(180deg, #fff8ef 0%, #f3e6d4 100%);
         color: #2b1a10;
+    }
+
+    .main .block-container {
+        padding-top: 2rem;
+        max-width: 1180px;
     }
 
     .cora-title {
@@ -44,6 +50,15 @@ st.markdown(
         margin-bottom: 20px;
     }
 
+    .cora-card {
+        background: rgba(255,255,255,0.86);
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid #ead8c4;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        margin-bottom: 16px;
+    }
+
     .cora-box {
         background: #fff1d8;
         padding: 15px;
@@ -51,6 +66,14 @@ st.markdown(
         border-left: 6px solid #d28a35;
         color: #3a2416;
         margin: 12px 0px;
+    }
+
+    .cora-mobile-box {
+        background: rgba(255,250,243,0.92);
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid #ead8c4;
+        margin: 10px 0 18px 0;
     }
 
     div.stButton > button {
@@ -67,6 +90,34 @@ st.markdown(
         background: #f1d6ae;
         border: 1px solid #b9782f;
         color: #2a160c;
+    }
+
+    div[data-baseweb="select"] > div {
+        background-color: #fffaf3;
+        border-radius: 14px;
+        border-color: #d8b993;
+        min-height: 48px;
+    }
+
+    .small {
+        font-size: 13px;
+        color: #7a563c;
+    }
+
+    @media (max-width: 700px) {
+        .main .block-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 1rem;
+        }
+
+        .cora-title {
+            font-size: 30px;
+        }
+
+        .cora-subtitle {
+            font-size: 15px;
+        }
     }
     </style>
     """,
@@ -88,10 +139,15 @@ init_state("message", "")
 init_state("shopping_items", [])
 init_state("recipe_result", "")
 init_state("family_note_saved", "")
+init_state("mobile_select", "🏠 Start")
 
 # =========================================================
-# NAVIGATION — OHNE RERUN
+# HELPERS
 # =========================================================
+
+def set_msg(text):
+    st.session_state.message = text
+
 
 def go_to(view_name):
     st.session_state.active_view = view_name
@@ -101,15 +157,106 @@ def go_to(view_name):
 
 def toggle_menu():
     st.session_state.menu_open = not st.session_state.menu_open
-    if st.session_state.menu_open:
-        st.session_state.message = "Menü geöffnet."
+    set_msg("Menü geöffnet." if st.session_state.menu_open else "Menü geschlossen.")
+
+
+def mobile_label_to_view(label):
+    mapping = {
+        "🏠 Start": "home",
+        "🍳 Rezept": "recipe",
+        "🛒 Einkauf": "shopping",
+        "🍽️ Kochen": "cooking",
+        "👨‍👧 Familie": "family",
+        "🧠 Planen": "plan",
+        "📸 Upload": "upload",
+    }
+    return mapping.get(label, "home")
+
+
+def sync_mobile_select_to_view():
+    current = st.session_state.mobile_select
+    selected_view = mobile_label_to_view(current)
+    st.session_state.active_view = selected_view
+    st.session_state.menu_open = False
+    st.session_state.message = f"Mobile Auswahl: {selected_view}"
+
+
+def add_shopping_item():
+    item = st.session_state.get("new_shopping_item", "").strip()
+
+    if not item:
+        set_msg("Kein Artikel eingegeben.")
+        return
+
+    st.session_state.shopping_items.append(
+        {
+            "id": datetime.now().strftime("%Y%m%d%H%M%S%f"),
+            "name": item,
+            "done": False,
+            "time": datetime.now().strftime("%H:%M"),
+        }
+    )
+
+    st.session_state.new_shopping_item = ""
+    set_msg(f"{item} hinzugefügt.")
+
+
+def clear_shopping_list():
+    st.session_state.shopping_items = []
+    set_msg("Einkaufsliste geleert.")
+
+
+def delete_shopping_item(item_id):
+    removed_name = ""
+    new_items = []
+
+    for item in st.session_state.shopping_items:
+        if item["id"] == item_id:
+            removed_name = item["name"]
+        else:
+            new_items.append(item)
+
+    st.session_state.shopping_items = new_items
+
+    if removed_name:
+        set_msg(f"{removed_name} entfernt.")
     else:
-        st.session_state.message = "Menü geschlossen."
+        set_msg("Artikel entfernt.")
 
 
-def set_msg(text):
-    st.session_state.message = text
+def save_family_note():
+    st.session_state.family_note_saved = st.session_state.get("family_note_input", "")
+    set_msg("Familiennotiz gespeichert.")
 
+
+def delete_family_note():
+    st.session_state.family_note_saved = ""
+    st.session_state.family_note_input = ""
+    set_msg("Familiennotiz gelöscht.")
+
+
+def generate_recipe():
+    ingredients = st.session_state.get("recipe_ingredients", "").strip()
+    mode = st.session_state.get("recipe_mode", "Schnell & einfach")
+
+    if not ingredients:
+        st.session_state.recipe_result = "Bitte zuerst eintragen, was zuhause ist."
+        set_msg("Keine Zutaten eingetragen.")
+        return
+
+    st.session_state.recipe_result = (
+        f"Modus: {mode}\n\n"
+        f"Zutaten: {ingredients}\n\n"
+        "Cora Idee:\n"
+        "Mach daraus eine einfache Pfanne.\n\n"
+        "1. Basis kochen: Reis, Nudeln oder Kartoffeln.\n"
+        "2. Gemüse oder Reste klein schneiden.\n"
+        "3. Alles anbraten.\n"
+        "4. Ei, Fleisch, Käse oder Bohnen dazu.\n"
+        "5. Würzen mit Salz, Paprika, Knoblauch, Kräutern oder Sojasauce.\n\n"
+        "Nicht perfekt. Nur warm, gut und machbar."
+    )
+    set_msg("Rezeptvorschlag erstellt.")
 
 # =========================================================
 # HEADER
@@ -122,7 +269,7 @@ st.markdown(
 )
 
 # =========================================================
-# TOP NAVIGATION
+# DESKTOP BUTTON NAVIGATION — DESIGN BLEIBT
 # =========================================================
 
 col1, col2, col3, col4, col5 = st.columns(5)
@@ -148,11 +295,25 @@ with col5:
         go_to("upload")
 
 # =========================================================
+# MOBILE FALLBACK — GLEICHES DESIGN, NICHT ERSETZEN
+# =========================================================
+
+st.markdown('<div class="cora-mobile-box">', unsafe_allow_html=True)
+st.caption("📱 Falls Buttons in der App nicht reagieren: Bereich hier wählen.")
+st.selectbox(
+    "Mobile Schnellwahl",
+    ["🏠 Start", "🍳 Rezept", "🛒 Einkauf", "🍽️ Kochen", "👨‍👧 Familie", "🧠 Planen", "📸 Upload"],
+    key="mobile_select",
+    on_change=sync_mobile_select_to_view,
+)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# =========================================================
 # MENU
 # =========================================================
 
 if st.session_state.menu_open:
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 🧰 Cora Werkzeugkiste")
     st.caption("Nicht alles auf einmal. Nur das, was du gerade brauchst.")
 
@@ -184,16 +345,18 @@ if st.session_state.menu_open:
         if st.button("📸 Bild Upload", key="menu_upload"):
             go_to("upload")
 
-    if st.button("❌ Menü schließen", key="menu_close"):
+    if st.button("❌ Schließen", key="menu_close"):
         st.session_state.menu_open = False
         set_msg("Menü geschlossen.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================================================
 # HOME
 # =========================================================
 
 if st.session_state.active_view == "home":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### Willkommen ❤️")
     st.write("Heute machen wir es einfach. Kein Küchen-Chaos. Kein Einkaufs-Stress.")
 
@@ -221,21 +384,23 @@ if st.session_state.active_view == "home":
         if st.button("📸 Bild hochladen", key="home_upload"):
             go_to("upload")
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================================================
 # RECIPE
 # =========================================================
 
 elif st.session_state.active_view == "recipe":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 🍳 Rezept finden")
 
-    ingredients = st.text_area(
+    st.text_area(
         "Was hast du zuhause?",
         placeholder="z.B. Reis, Eier, Paprika, Nudeln, Käse, Huhn ...",
-        key="recipe_ingredients_input",
+        key="recipe_ingredients",
     )
 
-    mode = st.selectbox(
+    st.selectbox(
         "Was brauchst du heute?",
         [
             "Schnell & einfach",
@@ -244,30 +409,14 @@ elif st.session_state.active_view == "recipe":
             "Billig kochen",
             "Warm & gemütlich",
         ],
-        key="recipe_mode_input",
+        key="recipe_mode",
     )
 
     r1, r2 = st.columns(2)
 
     with r1:
         if st.button("✨ Cora Vorschlag", key="recipe_generate"):
-            if ingredients.strip():
-                st.session_state.recipe_result = (
-                    f"Modus: {mode}\n\n"
-                    f"Zutaten: {ingredients}\n\n"
-                    "Cora Idee:\n"
-                    "Mach daraus eine einfache Pfanne.\n\n"
-                    "1. Basis kochen: Reis, Nudeln oder Kartoffeln.\n"
-                    "2. Gemüse oder Reste klein schneiden.\n"
-                    "3. Alles anbraten.\n"
-                    "4. Ei, Fleisch, Käse oder Bohnen dazu.\n"
-                    "5. Würzen mit Salz, Paprika, Knoblauch, Kräutern oder Sojasauce.\n\n"
-                    "Nicht perfekt. Nur warm, gut und machbar."
-                )
-                set_msg("Rezeptvorschlag erstellt.")
-            else:
-                st.session_state.recipe_result = "Bitte zuerst eintragen, was zuhause ist."
-                set_msg("Keine Zutaten eingetragen.")
+            generate_recipe()
 
     with r2:
         if st.button("🧹 Ergebnis leeren", key="recipe_clear"):
@@ -278,52 +427,38 @@ elif st.session_state.active_view == "recipe":
         st.markdown("#### Ergebnis")
         st.info(st.session_state.recipe_result)
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================================================
 # SHOPPING
 # =========================================================
 
 elif st.session_state.active_view == "shopping":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 🛒 Einkaufsliste")
 
-    new_item = st.text_input(
+    st.text_input(
         "Artikel hinzufügen",
         placeholder="z.B. Milch, Haferflocken, Ketchup ...",
-        key="shopping_new_item_input",
+        key="new_shopping_item",
     )
 
     s1, s2 = st.columns(2)
 
     with s1:
         if st.button("➕ Hinzufügen", key="shopping_add"):
-            item_name = new_item.strip()
-
-            if item_name:
-                st.session_state.shopping_items.append(
-                    {
-                        "id": datetime.now().strftime("%Y%m%d%H%M%S%f"),
-                        "name": item_name,
-                        "done": False,
-                        "time": datetime.now().strftime("%H:%M"),
-                    }
-                )
-                set_msg(f"{item_name} hinzugefügt.")
-            else:
-                set_msg("Kein Artikel eingegeben.")
+            add_shopping_item()
 
     with s2:
         if st.button("🧹 Liste leeren", key="shopping_clear"):
-            st.session_state.shopping_items = []
-            set_msg("Einkaufsliste geleert.")
+            clear_shopping_list()
 
     st.markdown("#### Liste")
 
     if not st.session_state.shopping_items:
         st.caption("Noch keine Artikel in der Liste.")
     else:
-        delete_id = None
-
-        for item in st.session_state.shopping_items:
+        for item in list(st.session_state.shopping_items):
             row1, row2 = st.columns([5, 1])
 
             with row1:
@@ -336,48 +471,45 @@ elif st.session_state.active_view == "shopping":
 
             with row2:
                 if st.button("❌", key=f"shopping_delete_{item['id']}"):
-                    delete_id = item["id"]
-
-        if delete_id:
-            st.session_state.shopping_items = [
-                item for item in st.session_state.shopping_items if item["id"] != delete_id
-            ]
-            set_msg("Artikel entfernt.")
+                    delete_shopping_item(item["id"])
 
         done_count = sum(1 for item in st.session_state.shopping_items if item["done"])
         total_count = len(st.session_state.shopping_items)
+
         st.success(f"Erledigt: {done_count} / {total_count}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================================================
 # COOKING
 # =========================================================
 
 elif st.session_state.active_view == "cooking":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 🍽️ Kochmodus")
 
     energy = st.radio(
         "Wie viel Energie ist heute da?",
         ["Sehr wenig", "Normal", "Heute geht mehr"],
-        key="cooking_energy_radio",
+        key="cooking_energy",
     )
 
     c1, c2, c3 = st.columns(3)
 
     with c1:
         if st.button("⚡ 10 Minuten", key="cook_fast"):
-            set_msg("Schnelle Kochidee gewählt.")
             st.info("Eierbrot, Nudeln mit Butter/Käse, Reis mit Ei, Suppe oder Toast.")
+            set_msg("Schnelle Kochidee gewählt.")
 
     with c2:
         if st.button("🍚 Basis + Reste", key="cook_base"):
-            set_msg("Basis-Idee gewählt.")
             st.info("Reis/Nudeln/Kartoffeln als Basis. Reste anbraten. Würzen. Fertig.")
+            set_msg("Basis-Idee gewählt.")
 
     with c3:
         if st.button("🥶 Kühlschrank leer?", key="cook_empty"):
-            set_msg("Notfall-Idee gewählt.")
             st.info("Dann einfach halten: Nudeln, Ei, Brot, Suppe, Reis, Tiefkühlgemüse.")
+            set_msg("Notfall-Idee gewählt.")
 
     st.markdown(
         f"""
@@ -389,41 +521,43 @@ elif st.session_state.active_view == "cooking":
         unsafe_allow_html=True,
     )
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================================================
 # FAMILY
 # =========================================================
 
 elif st.session_state.active_view == "family":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 👨‍👧 Familienmodus")
 
-    family_note = st.text_area(
+    st.text_area(
         "Was ist heute wichtig?",
         placeholder="z.B. Schule, Training, Essen, Termine, Einkauf ...",
-        key="family_note_input_area",
+        key="family_note_input",
     )
 
     f1, f2 = st.columns(2)
 
     with f1:
         if st.button("💾 Merken", key="family_save"):
-            st.session_state.family_note_saved = family_note
-            set_msg("Familiennotiz gespeichert.")
+            save_family_note()
 
     with f2:
         if st.button("🧹 Löschen", key="family_delete"):
-            st.session_state.family_note_saved = ""
-            set_msg("Familiennotiz gelöscht.")
+            delete_family_note()
 
     if st.session_state.family_note_saved:
         st.success(st.session_state.family_note_saved)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================================================
 # PLAN
 # =========================================================
 
 elif st.session_state.active_view == "plan":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 🧠 Stressfrei planen")
 
     st.write("Nicht alles gleichzeitig. Cora macht daraus drei kleine Schritte.")
@@ -445,20 +579,21 @@ elif st.session_state.active_view == "plan":
             st.info("Im Geschäft nur abhaken. Keine neue Baustelle im Kopf.")
             set_msg("Plan Schritt 3.")
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================================================
 # UPLOAD
 # =========================================================
 
 elif st.session_state.active_view == "upload":
-    st.divider()
+    st.markdown('<div class="cora-card">', unsafe_allow_html=True)
     st.markdown("### 📸 Bild hochladen")
-
     st.write("Hier kannst du ein Küchenbild, Kühlschrankbild oder Einkaufsbild laden.")
 
     uploaded_image = st.file_uploader(
         "Bild auswählen",
         type=["png", "jpg", "jpeg", "webp"],
-        key="safe_image_uploader",
+        key="kitchen_image_upload",
         accept_multiple_files=False,
     )
 
@@ -467,11 +602,13 @@ elif st.session_state.active_view == "upload":
         st.success("Bild wurde geladen.")
         st.caption(f"Datei: {uploaded_image.name}")
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
 # =========================================================
 # FOOTER
 # =========================================================
 
-st.divider()
+st.markdown("---")
 
 if st.session_state.message:
     st.caption(f"Letzte Aktion: {st.session_state.message}")
