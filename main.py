@@ -2,14 +2,14 @@ import streamlit as st
 from datetime import datetime
 
 # =========================================================
-# CORA FAMILY KITCHEN — RADICAL BUTTON SAFE VERSION
+# CORA FAMILY KITCHEN — BUTTON FIX VERSION
 # =========================================================
-# Ziel:
-# - Buttons müssen reagieren
-# - Upload muss klickbar sein
-# - Keine offenen HTML-Wrapper um Widgets
-# - Kein on_click-System
-# - Nach jedem View-Wechsel: st.rerun()
+# Fix:
+# - Kein st.rerun()
+# - Kein on_click
+# - Kein HTML-Wrapper um Buttons
+# - Buttons setzen nur session_state
+# - Upload direkt erreichbar
 # =========================================================
 
 st.set_page_config(
@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 # =========================================================
-# STYLE — NUR SAFE CSS, KEINE OVERLAYS
+# STYLE — SAFE CSS
 # =========================================================
 
 st.markdown(
@@ -90,20 +90,21 @@ init_state("recipe_result", "")
 init_state("family_note_saved", "")
 
 # =========================================================
-# SIMPLE NAVIGATION
+# NAVIGATION — OHNE RERUN
 # =========================================================
 
 def go_to(view_name):
     st.session_state.active_view = view_name
     st.session_state.menu_open = False
     st.session_state.message = f"Geöffnet: {view_name}"
-    st.rerun()
 
 
 def toggle_menu():
     st.session_state.menu_open = not st.session_state.menu_open
-    st.session_state.message = "Menü geöffnet." if st.session_state.menu_open else "Menü geschlossen."
-    st.rerun()
+    if st.session_state.menu_open:
+        st.session_state.message = "Menü geöffnet."
+    else:
+        st.session_state.message = "Menü geschlossen."
 
 
 def set_msg(text):
@@ -185,7 +186,7 @@ if st.session_state.menu_open:
 
     if st.button("❌ Menü schließen", key="menu_close"):
         st.session_state.menu_open = False
-        st.rerun()
+        set_msg("Menü geschlossen.")
 
 # =========================================================
 # HOME
@@ -267,13 +268,11 @@ elif st.session_state.active_view == "recipe":
             else:
                 st.session_state.recipe_result = "Bitte zuerst eintragen, was zuhause ist."
                 set_msg("Keine Zutaten eingetragen.")
-            st.rerun()
 
     with r2:
         if st.button("🧹 Ergebnis leeren", key="recipe_clear"):
             st.session_state.recipe_result = ""
             set_msg("Rezeptfeld geleert.")
-            st.rerun()
 
     if st.session_state.recipe_result:
         st.markdown("#### Ergebnis")
@@ -297,28 +296,25 @@ elif st.session_state.active_view == "shopping":
 
     with s1:
         if st.button("➕ Hinzufügen", key="shopping_add"):
-            item = new_item.strip()
+            item_name = new_item.strip()
 
-            if item:
+            if item_name:
                 st.session_state.shopping_items.append(
                     {
                         "id": datetime.now().strftime("%Y%m%d%H%M%S%f"),
-                        "name": item,
+                        "name": item_name,
                         "done": False,
                         "time": datetime.now().strftime("%H:%M"),
                     }
                 )
-                set_msg(f"{item} hinzugefügt.")
+                set_msg(f"{item_name} hinzugefügt.")
             else:
                 set_msg("Kein Artikel eingegeben.")
-
-            st.rerun()
 
     with s2:
         if st.button("🧹 Liste leeren", key="shopping_clear"):
             st.session_state.shopping_items = []
             set_msg("Einkaufsliste geleert.")
-            st.rerun()
 
     st.markdown("#### Liste")
 
@@ -347,7 +343,6 @@ elif st.session_state.active_view == "shopping":
                 item for item in st.session_state.shopping_items if item["id"] != delete_id
             ]
             set_msg("Artikel entfernt.")
-            st.rerun()
 
         done_count = sum(1 for item in st.session_state.shopping_items if item["done"])
         total_count = len(st.session_state.shopping_items)
@@ -414,13 +409,11 @@ elif st.session_state.active_view == "family":
         if st.button("💾 Merken", key="family_save"):
             st.session_state.family_note_saved = family_note
             set_msg("Familiennotiz gespeichert.")
-            st.rerun()
 
     with f2:
         if st.button("🧹 Löschen", key="family_delete"):
             st.session_state.family_note_saved = ""
             set_msg("Familiennotiz gelöscht.")
-            st.rerun()
 
     if st.session_state.family_note_saved:
         st.success(st.session_state.family_note_saved)
