@@ -479,6 +479,135 @@ div[role="option"]:hover {
     }
 }
 
+
+/* Product Polish v3: desktop clean line, mobile clean menu */
+.block-container {
+    max-width: 820px !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+}
+
+[data-testid="stImage"] {
+    width: 100% !important;
+    max-width: 820px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 22px !important;
+}
+
+[data-testid="stImage"] img {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+.cora-header,
+.cora-card,
+.list-item,
+.stRadio,
+[data-testid="stFileUploader"] {
+    max-width: 820px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.nav-label {
+    max-width: 820px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 4px !important;
+}
+
+.desktop-nav {
+    max-width: 820px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 16px !important;
+}
+
+.desktop-nav [data-testid="stHorizontalBlock"] {
+    gap: 0.7rem !important;
+}
+
+.desktop-nav .stButton > button {
+    min-height: 46px !important;
+    font-size: 0.92rem !important;
+    white-space: nowrap !important;
+}
+
+.mobile-nav {
+    display: none !important;
+}
+
+.cora-separator {
+    margin-top: 16px !important;
+    margin-bottom: 24px !important;
+}
+
+@media (max-width: 600px) {
+    .block-container {
+        max-width: 100% !important;
+        padding-left: 0.95rem !important;
+        padding-right: 0.95rem !important;
+        padding-top: 0.75rem !important;
+    }
+
+    [data-testid="stImage"] {
+        max-width: 100% !important;
+        margin-bottom: 16px !important;
+    }
+
+    .cora-header {
+        padding: 16px 14px 18px 14px !important;
+        border-radius: 20px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .cora-title {
+        font-size: 1.48rem !important;
+        line-height: 1.15 !important;
+    }
+
+    .cora-subtitle {
+        font-size: 0.92rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .desktop-nav {
+        display: none !important;
+    }
+
+    .mobile-nav {
+        display: block !important;
+        max-width: 100% !important;
+        margin-bottom: 14px !important;
+    }
+
+    .stSelectbox label {
+        color: #ffb14a !important;
+        font-size: 1.02rem !important;
+        font-weight: 950 !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] > div {
+        min-height: 56px !important;
+        background: rgba(0, 0, 0, 0.90) !important;
+        border: 1px solid rgba(255, 160, 55, 0.62) !important;
+        border-radius: 15px !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] span,
+    .stSelectbox div[data-baseweb="select"] div {
+        color: #fff3e4 !important;
+        font-size: 1.02rem !important;
+        font-weight: 850 !important;
+    }
+
+    .list-item {
+        font-size: 0.96rem !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1184,12 +1313,15 @@ for col, page_name in zip(nav_cols, pages):
         st.button(page_name, key=f"nav_{page_name}", use_container_width=True, on_click=go, args=(page_name,))
 st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown('<div class="mobile-nav">', unsafe_allow_html=True)
 selected_page = st.selectbox(
     "Menü",
     pages,
     index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
-    label_visibility="visible"
+    label_visibility="visible",
+    key="mobile_menu"
 )
+st.markdown('</div>', unsafe_allow_html=True)
 
 if selected_page != st.session_state.page:
     st.session_state.page = selected_page
