@@ -342,6 +342,25 @@ p, div, span, label {
     .stCheckbox label {
         font-size: 0.98rem !important;
     }
+
+    /* Am Handy: Desktop-Buttonleiste verstecken, Roll-Cora-Dings-Bummsen bleibt */
+    .desktop-nav {
+        display: none !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] > div {
+        min-height: 54px !important;
+    }
+
+    .stSelectbox div[data-baseweb="select"] span,
+    .stSelectbox div[data-baseweb="select"] div {
+        font-size: 1.08rem !important;
+    }
+
+    [data-testid="stFileUploader"] {
+        padding: 10px;
+        z-index: 50;
+    }
 }
 
 /* Navigation Fix */
@@ -1087,16 +1106,18 @@ pages = ["🏠 Start", "🍳 Rezept", "🛒 Einkauf", "👨‍🍳 Kochen", "�
 
 st.markdown('<div class="nav-label">🧭 Schnellwahl</div>', unsafe_allow_html=True)
 
+st.markdown('<div class="desktop-nav">', unsafe_allow_html=True)
 nav_cols = st.columns(5)
 for col, page_name in zip(nav_cols, pages):
     with col:
         st.button(page_name, key=f"nav_{page_name}", use_container_width=True, on_click=go, args=(page_name,))
+st.markdown('</div>', unsafe_allow_html=True)
 
 selected_page = st.selectbox(
-    "Mobile Schnellwahl",
+    "📱 Roll-Cora-Dings-Bummsen",
     pages,
     index=pages.index(st.session_state.page) if st.session_state.page in pages else 0,
-    label_visibility="collapsed",
+    label_visibility="visible",
     key="mobile_nav_select"
 )
 
@@ -1197,7 +1218,7 @@ elif st.session_state.page == "📸 Upload":
     """, unsafe_allow_html=True)
 
     uploaded_photos = st.file_uploader(
-        "3 Bilder hochladen",
+        "📸 Bilder auswählen oder hier reinziehen",
         type=["png", "jpg", "jpeg", "webp"],
         accept_multiple_files=True,
         key="photo_upload",
