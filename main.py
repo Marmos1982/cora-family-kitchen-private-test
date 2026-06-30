@@ -863,6 +863,47 @@ div[role="option"][aria-selected="true"] {
     }
 }
 
+
+/* V11 Plan-Einkauf: Checkbox lists instead of unreadable multiselect */
+.stCheckbox {
+    background: rgba(255, 255, 255, 0.060) !important;
+    border: 1px solid rgba(255, 160, 55, 0.18) !important;
+    border-radius: 13px !important;
+    padding: 8px 12px !important;
+    margin-bottom: 7px !important;
+}
+
+.stCheckbox:hover {
+    background: rgba(255, 120, 20, 0.12) !important;
+    border: 1px solid rgba(255, 160, 55, 0.34) !important;
+}
+
+.stCheckbox label,
+.stCheckbox label span,
+.stCheckbox label p,
+.stCheckbox div {
+    color: #fff3e4 !important;
+    font-size: 1rem !important;
+    font-weight: 750 !important;
+    opacity: 1 !important;
+}
+
+.stCheckbox input {
+    accent-color: #ff9f2f !important;
+}
+
+@media (max-width: 600px) {
+    .stCheckbox {
+        padding: 9px 10px !important;
+    }
+
+    .stCheckbox label,
+    .stCheckbox label span,
+    .stCheckbox label p {
+        font-size: 0.94rem !important;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -1050,8 +1091,17 @@ elif page == "🍳 Rezept":
 elif page == "📅 Plan-Einkauf":
     show_card("📅 Plan-Einkauf", "Plane 1 Woche, 2 Wochen oder 1 Monat. Wähle Kochen und Backen aus. Cora macht daraus eine gemeinsame Einkaufsliste.")
     period = st.radio("Zeitraum wählen", ["1 Woche", "2 Wochen", "1 Monat"], horizontal=True)
-    selected_cooking = st.multiselect("🍲 Kochideen auswählen", recipe_names)
-    selected_baking = st.multiselect("🍰 Backideen auswählen", baking_names)
+    st.markdown('<div class="section-title">🍲 Kochideen auswählen</div>', unsafe_allow_html=True)
+    selected_cooking = []
+    for name in recipe_names:
+        if st.checkbox(name, key=f"plan_cook_{name}"):
+            selected_cooking.append(name)
+
+    st.markdown('<div class="section-title">🍰 Backideen auswählen</div>', unsafe_allow_html=True)
+    selected_baking = []
+    for name in baking_names:
+        if st.checkbox(name, key=f"plan_bake_{name}"):
+            selected_baking.append(name)
 
     if selected_cooking or selected_baking:
         low, high = estimate_budget(period, len(selected_cooking), len(selected_baking))
